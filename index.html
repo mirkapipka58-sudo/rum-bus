@@ -2,217 +2,332 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RUM-BUS — пасажирські перевезення Україна – Європа</title>
 <meta name="description" content="RUM-BUS: мікроавтобуси з України до Польщі, Чехії, Німеччини, Італії, Іспанії та інших країн Європи. Від адреси до адреси, класи Comfort і Lux, ціна одразу на сайті.">
-<meta name="theme-color" content="#0e4da4">
+<meta name="theme-color" content="#071a3d">
+<meta property="og:title" content="RUM-BUS — Україна – Європа від дверей до дверей">
+<meta property="og:description" content="110 напрямків, виїзди о 08:00 і 18:00, ціна одразу на сайті.">
+<meta property="og:image" content="images/hero.jpg">
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="images/hero.webp" type="image/webp">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<a class="skip" href="#main">Перейти до змісту</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bus" viewBox="0 0 24 24"><path d="M4 16V7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v9"/><path d="M4 16h16v2a1 1 0 0 1-1 1h-1M4 16v2a1 1 0 0 0 1 1h1"/><path d="M4 11h16M9 4v7"/><circle cx="8" cy="19" r="1.6"/><circle cx="16" cy="19" r="1.6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4v15m0 0-3.5-3.5M7 19l3.5-3.5M17 20V5m0 0-3.5 3.5M17 5l3.5 3.5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18 14.3a6.5 6.5 0 0 1 3.5 5.7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3.5h3.2l1.6 4.2-2.2 1.5a11 11 0 0 0 7.2 7.2l1.5-2.2 4.2 1.6V19a2 2 0 0 1-2 2A17 17 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21 4 3 11.2l6.3 2.1M21 4l-3 16-8.7-6.7M21 4 9.3 13.3V19l3.2-3.3"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M3.5 20.5l1.3-4.4A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 8.5c0 3.6 2.9 6.5 6.5 6.5l1-1.6-2-1-1 1a4.6 4.6 0 0 1-2.4-2.4l1-1-1-2z"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.6 16a5 5 0 0 1 6.8 0"/><circle cx="12" cy="19.2" r=".9"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0zM12 17v4"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6M9 4.5l3 2.5 3-2.5M9 19.5l3-2.5 3 2.5"/></symbol>
+  <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.2"/><path d="M3.8 10.5 9.9 11.5M14.1 11.5l6.1-1M12 14.2v6.3"/></symbol>
+  <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4.5 9h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5zM16.5 10.5h1.5a2.5 2.5 0 0 1 0 5h-1.8M8 3.5c0 1.5 1.5 1.5 1.5 3M12 3.5c0 1.5 1.5 1.5 1.5 3"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="5.5" r="2"/><path d="M7.5 18.5h8a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6h8"/></symbol>
+  <symbol id="i-pillow" viewBox="0 0 24 24"><path d="M4 7c3-2 13-2 16 0 1 3 1 7 0 10-3 2-13 2-16 0-1-3-1-7 0-10z"/><path d="M8 10.5c2.5-.8 5.5-.8 8 0"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5M10 20v-5h4v5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.1 7.5 9.5 4.3-1.4 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/></symbol>
+  <symbol id="i-seat" viewBox="0 0 24 24"><path d="M7 3.5h4a2 2 0 0 1 2 2v7H7.5a2 2 0 0 1-2-2v-5a2 2 0 0 1 1.5-2zM5.5 12.5l1 4h9.5a2 2 0 0 0 2-2v-2h-5M8 16.5v4M15 16.5v4"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9M7.8 5.3l8.4 4.5"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M10.5 13.5 4 11l1.5-1.5 7 1 4-4.5c1-1 2.6-1.3 3.3-.6.7.7.4 2.3-.6 3.3l-4.5 4 1 7L14 21l-2.5-6.5-3.5 3V20l-1.5 1-1-3-3-1L3.5 15.5h2.5z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M10 7H6.5A2.5 2.5 0 0 0 4 9.5V13h5v5H4M20 7h-3.5A2.5 2.5 0 0 0 14 9.5V13h5v5h-5"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9l-5 4z"/><path d="M8.5 10.5h7"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-5-5 5 5-5 5"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></symbol>
+</svg>
 
-<div class="notice" id="notice" hidden><a href="#" id="notice-link"></a></div>
+<a class="skip" href="#main">Перейти до змісту</a>
 
 <header class="top" id="top">
   <div class="wrap top__in">
     <a class="logo" href="#main" aria-label="RUM-BUS, на початок сторінки">
-      <span class="logo__plate">RUM<span class="logo__dash">-</span>BUS</span>
+      <span class="logo__mark"><svg class="ic"><use href="#i-bus"/></svg></span>
+      <span class="logo__word">RUM<i>-</i>BUS</span>
     </a>
     <nav class="nav" id="nav" aria-label="Основне меню">
       <a href="#routes">Маршрути</a>
-      <a href="#prices">Як рахуємо ціну</a>
-      <a href="#services">Посилки і трансфер</a>
+      <a href="#classes">Класи і ціни</a>
+      <a href="#services">Послуги</a>
       <a href="#reviews">Відгуки</a>
       <a href="#faq">Питання</a>
       <a href="#contacts">Контакти</a>
+      <div class="nav__extra">
+        <a class="btn btn--amber btn--block" href="tel:+380636881604" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 688 16 04</span></a>
+        <div class="nav__msg">
+          <a class="btn btn--tg" href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
+          <a class="btn btn--wa" href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+        </div>
+      </div>
     </nav>
-    <a class="top__phone" href="tel:+380636881604" data-phone-link><span data-phone-display>+380 63 688 16 04</span></a>
-    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav"><span></span><span></span><span class="sr">Меню</span></button>
+    <a class="top__phone" href="tel:+380636881604" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 688 16 04</span></a>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Меню"><span></span><span></span><span></span></button>
   </div>
 </header>
 
 <main id="main">
-  <!-- HERO: the direction sign is the search form -->
-  <section class="hero">
-    <div class="wrap hero__grid">
+  <section class="hero" aria-labelledby="hero-title">
+    <picture class="hero__bg">
+      <source srcset="images/hero.webp" type="image/webp">
+      <img src="images/hero.jpg" alt="" fetchpriority="high">
+    </picture>
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="wrap hero__in">
       <div class="hero__copy">
-        <h1 class="hero__title">З України до Європи від дверей до дверей</h1>
-        <p class="hero__lead">Мікроавтобуси на 7 пасажирів, два водії в рейсі, Wi‑Fi і зарядки. Їдемо в Польщу, Чехію, Німеччину, Австрію, Італію, Францію, Іспанію, Португалію та Молдову.</p>
-        <ul class="hero__facts">
-          <li><b>110</b> напрямків у розкладі</li>
-          <li><b>08:00</b> і <b>18:00</b> щоденні виїзди</li>
-          <li><b>24/7</b> на зв'язку менеджер</li>
+        <p class="hero__badge"><svg class="ic"><use href="#i-shield"/></svg>Пасажирські перевезення Україна – Європа</p>
+        <h1 class="hero__title" id="hero-title">З України до Європи <span class="grad">від дверей до дверей</span></h1>
+        <p class="hero__lead">Мікроавтобуси на 7 пасажирів, два водії в рейсі, Wi‑Fi і зарядки. Польща, Чехія, Німеччина, Австрія, Італія, Франція, Іспанія, Португалія та Молдова.</p>
+        <ul class="hero__stats">
+          <li><svg class="ic"><use href="#i-route"/></svg><b data-count="110">110</b><span>напрямків</span></li>
+          <li><svg class="ic"><use href="#i-clock"/></svg><b>08:00 · 18:00</b><span>щоденні виїзди</span></li>
+          <li><svg class="ic"><use href="#i-chat"/></svg><b>24/7</b><span>підтримка</span></li>
         </ul>
       </div>
+    </div>
 
-      <form class="sign" id="search" autocomplete="off" aria-label="Пошук рейсу">
-        <div class="sign__frame">
-          <div class="sign__row">
-            <label class="sign__label" for="s-from">Звідки</label>
-            <select id="s-from" class="sign__select" required></select>
-          </div>
-          <button type="button" class="sign__swap" id="s-swap" aria-label="Поміняти міста місцями">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v14m0 0-3-3m3 3 3-3M17 20V6m0 0-3 3m3-3 3 3"/></svg>
-          </button>
-          <div class="sign__row">
-            <label class="sign__label" for="s-to">Куди</label>
-            <select id="s-to" class="sign__select" required></select>
-          </div>
-          <div class="sign__meta" id="s-meta" aria-live="polite">Оберіть міста, і ми покажемо час у дорозі та ціну</div>
-        </div>
-        <div class="sign__bottom">
-          <label class="field field--date">
-            <span>Дата</span>
-            <input type="date" id="s-date" required>
+    <div class="wrap hero__finder">
+      <form class="finder" id="search" autocomplete="off" aria-label="Пошук рейсу і ціни">
+        <div class="finder__cities">
+          <label class="finder__field">
+            <span class="finder__label"><svg class="ic"><use href="#i-pin"/></svg>Звідки</span>
+            <select id="s-from" required></select>
           </label>
-          <fieldset class="cls" data-cls-group>
-            <legend class="sr">Клас і час виїзду</legend>
-            <label><input type="radio" name="cls" value="comfort" checked><span><b>Comfort</b> виїзд 08:00</span></label>
-            <label><input type="radio" name="cls" value="lux"><span><b>Lux</b> виїзд 18:00</span></label>
-          </fieldset>
+          <button type="button" class="finder__swap" id="s-swap" aria-label="Поміняти міста місцями"><svg class="ic"><use href="#i-swap"/></svg></button>
+          <label class="finder__field">
+            <span class="finder__label"><svg class="ic"><use href="#i-flag"/></svg>Куди</span>
+            <select id="s-to" required></select>
+          </label>
         </div>
-        <div class="sign__total">
-          <div class="sign__price" id="s-price"><span class="sign__price-label">Ціна квитка</span><strong>—</strong></div>
-          <button class="btn btn--amber" type="submit">Забронювати місце</button>
+        <label class="finder__field finder__field--date">
+          <span class="finder__label"><svg class="ic"><use href="#i-cal"/></svg>Дата</span>
+          <input type="date" id="s-date" required>
+        </label>
+        <fieldset class="seg">
+          <legend class="sr">Клас і час виїзду</legend>
+          <label><input type="radio" name="cls" value="comfort" checked><span><svg class="ic"><use href="#i-sun"/></svg><b>Comfort</b><small>08:00</small></span></label>
+          <label><input type="radio" name="cls" value="lux"><span><svg class="ic"><use href="#i-moon"/></svg><b>Lux</b><small>18:00</small></span></label>
+        </fieldset>
+        <div class="finder__result">
+          <div class="finder__price" aria-live="polite">
+            <span class="finder__meta" id="s-meta">Оберіть міста</span>
+            <strong id="s-price">—</strong>
+          </div>
+          <button class="btn btn--amber btn--lg" type="submit">Забронювати<svg class="ic"><use href="#i-arrow"/></svg></button>
         </div>
       </form>
     </div>
-    <div class="road" aria-hidden="true"></div>
   </section>
 
-  <section class="perks" aria-label="Що є в рейсі">
+  <section class="perks" aria-labelledby="perks-title">
     <div class="wrap">
-      <ul class="perks__list" id="perks"></ul>
+      <h2 class="sr" id="perks-title">Що є в кожному рейсі</h2>
+      <ul class="perks__grid" id="perks"></ul>
     </div>
   </section>
 
-  <section class="section" id="routes">
+  <section class="section" id="routes" aria-labelledby="routes-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2>Маршрути і ціни</h2>
-        <p>Ціна за одного дорослого пасажира, у гривнях за курсом НБУ. Дітям до 16 років знижка 15%, пенсіонерам 10%.</p>
+      <div class="head" data-reveal>
+        <h2 id="routes-title">Маршрути і ціни</h2>
+        <p>Ціна за одного дорослого пасажира у гривнях за курсом НБУ. Дітям до 16 років <b>−15%</b>, пенсіонерам <b>−10%</b>.</p>
       </div>
-      <div class="routes__tools">
-        <label class="search-field">
+      <div class="popular" id="popular"></div>
+      <div class="tools" data-reveal>
+        <label class="tools__search">
+          <svg class="ic"><use href="#i-search"/></svg>
           <span class="sr">Знайти місто</span>
-          <input type="search" id="r-filter" placeholder="Знайти місто, наприклад «Прага»">
+          <input type="search" id="r-filter" placeholder="Знайти місто, наприклад Прага" autocomplete="off">
         </label>
         <div class="chips" id="r-chips" role="group" aria-label="Звідки виїжджаємо"></div>
       </div>
-      <div class="routes" id="routes-list" role="list"></div>
-      <div class="routes__more">
-        <button type="button" class="btn btn--ghost" id="r-more" hidden>Показати всі маршрути</button>
-        <p class="routes__empty" id="r-empty" hidden>Такого міста в розкладі немає. Напишіть менеджеру, і ми підберемо рейс з пересадкою або індивідуальний трансфер.</p>
-      </div>
+      <div class="routes" id="routes-list"></div>
+      <p class="routes__empty" id="r-empty" hidden>Такого міста в розкладі немає. Напишіть менеджеру: підберемо рейс або індивідуальний трансфер.</p>
+      <div class="routes__more"><button type="button" class="btn btn--outline" id="r-more" hidden></button></div>
     </div>
   </section>
 
-  <section class="section section--tint" id="prices">
-    <div class="wrap prices">
-      <div class="prices__text">
-        <h2>Як рахуємо ціну</h2>
-        <p>Ціна залежить від часу в дорозі: беремо дорожній маршрут і додаємо <span data-extra-hours>3</span> години на кордон і зупинки. Ціни в євро переводимо в гривні за курсом НБУ на сьогодні.</p>
-        <p class="prices__rate">Курс: €1 = <b data-eur-rate>51,45</b> ₴</p>
-        <dl class="prices__classes">
-          <div><dt>Comfort</dt><dd>Денний рейс, виїзд о 08:00.</dd></div>
-          <div><dt>Lux</dt><dd>Вечірній рейс, виїзд о 18:00.</dd></div>
-        </dl>
-      </div>
-      <div class="tariff">
-        <table>
-          <caption class="sr">Тарифна сітка за часом у дорозі</caption>
-          <thead><tr><th scope="col">У дорозі</th><th scope="col">Comfort</th><th scope="col">Lux</th></tr></thead>
-          <tbody id="tariff"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="services">
+  <section class="section section--soft" id="classes" aria-labelledby="classes-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2>Посилки і трансфер</h2>
+      <div class="head" data-reveal>
+        <h2 id="classes-title">Два класи — два часи виїзду</h2>
+        <p>Ціна залежить від часу в дорозі: дорожній маршрут плюс <span data-extra-hours>3</span> години на кордон і зупинки. Курс НБУ: €1 = <b data-eur-rate>51,45</b> ₴.</p>
       </div>
+      <div class="classes">
+        <article class="cls-card" data-reveal>
+          <picture class="cls-card__img"><source srcset="images/interior.webp" type="image/webp"><img src="images/interior.jpg" alt="Салон мікроавтобуса" loading="lazy"></picture>
+          <div class="cls-card__body">
+            <div class="cls-card__top"><span class="cls-card__icon"><svg class="ic"><use href="#i-sun"/></svg></span><div><h3>Comfort</h3><p>Денний рейс, виїзд о 08:00</p></div></div>
+            <p class="cls-card__from">від <b data-min="comfort">—</b></p>
+            <button class="btn btn--blue btn--block" type="button" data-pick-class="comfort">Обрати Comfort</button>
+          </div>
+        </article>
+        <article class="cls-card cls-card--lux" data-reveal>
+          <picture class="cls-card__img"><source srcset="images/interior2.webp" type="image/webp"><img src="images/interior2.jpg" alt="Крісла в салоні" loading="lazy"></picture>
+          <div class="cls-card__body">
+            <div class="cls-card__top"><span class="cls-card__icon"><svg class="ic"><use href="#i-moon"/></svg></span><div><h3>Lux</h3><p>Вечірній рейс, виїзд о 18:00</p></div></div>
+            <p class="cls-card__from">від <b data-min="lux">—</b></p>
+            <button class="btn btn--amber btn--block" type="button" data-pick-class="lux">Обрати Lux</button>
+          </div>
+        </article>
+        <div class="discounts" data-reveal>
+          <div class="discount"><span class="discount__pct" data-disc="child">−15%</span><span><b>Дітям до 16 років</b>Знижка рахується в бронюванні автоматично</span></div>
+          <div class="discount"><span class="discount__pct" data-disc="pens">−10%</span><span><b>Пенсіонерам</b>Знижка рахується в бронюванні автоматично</span></div>
+          <details class="tariff">
+            <summary>Тарифна сітка за часом у дорозі<svg class="ic"><use href="#i-down"/></svg></summary>
+            <div class="tariff__wrap">
+              <table>
+                <thead><tr><th scope="col">У дорозі</th><th scope="col">Comfort</th><th scope="col">Lux</th></tr></thead>
+                <tbody id="tariff"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="head head--center" data-reveal><h2 id="how-title">Як забронювати</h2></div>
+      <ol class="steps">
+        <li data-reveal><span class="steps__icon"><svg class="ic"><use href="#i-search"/></svg></span><h3>Оберіть рейс</h3><p>Міста, дату й клас. Ціну видно одразу.</p></li>
+        <li data-reveal><span class="steps__icon"><svg class="ic"><use href="#i-user"/></svg></span><h3>Залиште заявку</h3><p>Ім'я, телефон і кількість пасажирів.</p></li>
+        <li data-reveal><span class="steps__icon"><svg class="ic"><use href="#i-phone"/></svg></span><h3>Менеджер підтвердить</h3><p>Уточнить адресу посадки й реквізити для оплати.</p></li>
+        <li data-reveal><span class="steps__icon"><svg class="ic"><use href="#i-bus"/></svg></span><h3>Їдете</h3><p>Забираємо з адреси й довозимо до потрібних дверей.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="head" data-reveal><h2 id="services-title">Посилки, трансфер і групи</h2></div>
       <div class="services">
-        <article class="service">
-          <h3>Посилки по Європі</h3>
-          <p>Документи, речі й передачі родині в обидва боки, Україна ⇄ Європа. Заповніть заявку, і менеджер розповість деталі доставки.</p>
-          <button class="btn btn--blue" type="button" data-open="delivery">Відправити посилку</button>
+        <article class="service" data-reveal>
+          <picture class="service__img"><source srcset="images/parcel.webp" type="image/webp"><img src="images/parcel.jpg" alt="Передача посилки" loading="lazy"></picture>
+          <div class="service__body">
+            <span class="service__icon"><svg class="ic"><use href="#i-box"/></svg></span>
+            <h3>Посилки Україна ⇄ Європа</h3>
+            <p>Документи, речі й передачі родині в обидва боки.</p>
+            <button class="btn btn--outline" type="button" data-open="delivery">Відправити посилку</button>
+          </div>
         </article>
-        <article class="service">
-          <h3>Трансфер з аеропорту</h3>
-          <p>Зустрінемо в аеропорту Європи або відвеземо на рейс. Скажіть номер рейсу, решту організуємо ми.</p>
-          <button class="btn btn--blue" type="button" data-open="transfer">Замовити трансфер</button>
+        <article class="service" data-reveal>
+          <picture class="service__img"><source srcset="images/airport.webp" type="image/webp"><img src="images/airport.jpg" alt="Аеропорт" loading="lazy"></picture>
+          <div class="service__body">
+            <span class="service__icon"><svg class="ic"><use href="#i-plane"/></svg></span>
+            <h3>Трансфер з аеропорту</h3>
+            <p>Зустрінемо в аеропорту Європи або відвеземо на рейс.</p>
+            <button class="btn btn--outline" type="button" data-open="transfer">Замовити трансфер</button>
+          </div>
         </article>
-        <article class="service">
-          <h3>Окремий автобус для групи</h3>
-          <p>Індивідуальне замовлення для родини, команди чи робочої поїздки.</p>
-          <button class="btn btn--blue" type="button" data-open="callback">Обговорити поїздку</button>
+        <article class="service" data-reveal>
+          <picture class="service__img"><source srcset="images/road.webp" type="image/webp"><img src="images/road.jpg" alt="Дорога в Європі" loading="lazy"></picture>
+          <div class="service__body">
+            <span class="service__icon"><svg class="ic"><use href="#i-users"/></svg></span>
+            <h3>Окремий автобус для групи</h3>
+            <p>Індивідуальне замовлення для родини, команди чи робочої поїздки.</p>
+            <button class="btn btn--outline" type="button" data-open="callback">Обговорити поїздку</button>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section section--asphalt" id="reviews">
+  <section class="section section--dark" id="reviews" aria-labelledby="reviews-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2>Що кажуть пасажири</h2>
+      <div class="head head--split" data-reveal>
+        <h2 id="reviews-title">Відгуки пасажирів</h2>
+        <button class="btn btn--glass" type="button" data-open="review"><svg class="ic"><use href="#i-star"/></svg>Залишити відгук</button>
       </div>
       <div class="reviews" id="reviews-list"></div>
-      <button class="btn btn--ghost-light" type="button" data-open="review">Залишити відгук</button>
     </div>
   </section>
 
-  <section class="section" id="faq">
+  <section class="section" id="faq" aria-labelledby="faq-title">
     <div class="wrap faq">
-      <h2>Питання перед поїздкою</h2>
+      <div class="head" data-reveal>
+        <h2 id="faq-title">Питання перед поїздкою</h2>
+        <p>Не знайшли відповідь? Напишіть менеджеру, відповідаємо цілодобово.</p>
+      </div>
       <div class="faq__list" id="faq-list"></div>
     </div>
   </section>
 
-  <section class="section section--tint" id="contacts">
+  <section class="section section--soft" id="contacts" aria-labelledby="contacts-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2>Контакти</h2>
-        <p>Відповідаємо цілодобово. Оберіть менеджера й напишіть у зручний месенджер.</p>
+      <div class="cta" data-reveal>
+        <div class="cta__text">
+          <h2 id="contacts-title">Зв'яжіться з нами</h2>
+          <p>Підберемо рейс, порахуємо ціну й відповімо на питання. Цілодобово.</p>
+        </div>
+        <div class="cta__actions">
+          <a class="cta__phone" href="tel:+380636881604" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 688 16 04</span></a>
+          <div class="cta__btns">
+            <a class="btn btn--tg" href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
+            <a class="btn btn--wa" href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+            <button class="btn btn--glass" type="button" data-open="callback"><svg class="ic"><use href="#i-phone"/></svg>Передзвоніть мені</button>
+          </div>
+        </div>
       </div>
+      <h3 class="managers__title" data-reveal>Наші менеджери</h3>
       <div class="managers" id="managers"></div>
-      <div class="contact-line">
-        <a class="btn btn--tg" href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener">Telegram</a>
-        <a class="btn btn--wa" href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener">WhatsApp</a>
-        <button class="btn btn--blue" type="button" data-open="callback">Передзвоніть мені</button>
-      </div>
     </div>
   </section>
 </main>
 
 <footer class="foot">
   <div class="wrap foot__in">
-    <span class="logo__plate logo__plate--small">RUM<span class="logo__dash">-</span>BUS</span>
-    <p>Пасажирські перевезення Україна – Європа. Оплата на офіційний рахунок ФОП за реквізитами від менеджера.</p>
-    <p class="foot__copy">© <span id="year">2026</span> RUM-BUS</p>
+    <div class="foot__brand">
+      <a class="logo logo--light" href="#main"><span class="logo__mark"><svg class="ic"><use href="#i-bus"/></svg></span><span class="logo__word">RUM<i>-</i>BUS</span></a>
+      <p>Пасажирські перевезення Україна – Європа. Оплата на офіційний рахунок ФОП за реквізитами від менеджера.</p>
+    </div>
+    <nav class="foot__nav" aria-label="Розділи">
+      <a href="#routes">Маршрути</a><a href="#classes">Класи і ціни</a><a href="#services">Послуги</a><a href="#faq">Питання</a><a href="#contacts">Контакти</a>
+    </nav>
+    <div class="foot__contacts">
+      <a href="tel:+380636881604" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 688 16 04</span></a>
+      <a href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
+      <a href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+    </div>
+    <p class="foot__copy">© <span id="year">2026</span> RUM-BUS · Фото: <a href="images/CREDITS.md">Unsplash / Pexels</a></p>
   </div>
 </footer>
 
 <nav class="dock" aria-label="Швидкі дії">
-  <a href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener">Telegram</a>
-  <button type="button" data-open="booking" class="dock__main">Забронювати <small id="dock-min"></small></button>
-  <a href="tel:+380636881604" data-phone-link>Дзвінок</a>
+  <a href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg><span>Telegram</span></a>
+  <button type="button" data-open="booking" class="dock__main"><span>Забронювати</span><small id="dock-min"></small></button>
+  <a href="tel:+380636881604" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span>Дзвінок</span></a>
 </nav>
 
-<!-- Modal with forms -->
 <dialog class="modal" id="modal" aria-labelledby="modal-title">
-  <form method="dialog" class="modal__close-form"><button class="modal__close" aria-label="Закрити">×</button></form>
-  <h2 class="modal__title" id="modal-title"></h2>
+  <div class="modal__head">
+    <h2 class="modal__title" id="modal-title"></h2>
+    <button class="modal__close" type="button" data-close aria-label="Закрити"><svg class="ic"><use href="#i-x"/></svg></button>
+  </div>
   <form class="form" id="lead-form" novalidate></form>
   <div class="modal__done" id="modal-done" hidden>
+    <span class="modal__done-icon"><svg class="ic"><use href="#i-ok"/></svg></span>
     <p class="modal__done-title">Заявку надіслано</p>
     <p>Менеджер зв'яжеться з вами найближчим часом.</p>
-    <form method="dialog"><button class="btn btn--blue">Готово</button></form>
+    <button class="btn btn--blue" type="button" data-close>Готово</button>
   </div>
 </dialog>
 
