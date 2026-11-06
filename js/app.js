@@ -534,7 +534,44 @@
     observeReveal(d);
   }
 
-  initUi(); initSearch(); initRoutes(); renderTariff();
+  /* ---------------- gallery lightbox ---------------- */
+  function initGallery() {
+    var lb = $('#lightbox'), img = $('#lb-img'), count = $('#lb-count'), items = $$('#gallery .gallery__item'), idx = 0, opener = null;
+    if (!lb || !items.length) return;
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      var it = items[idx], alt = $('img', it).getAttribute('alt');
+      img.src = it.getAttribute('data-full'); img.alt = alt;
+      img.style.animation = 'none'; void img.offsetWidth; img.style.animation = '';
+      count.textContent = (idx + 1) + ' / ' + items.length;
+    }
+    function open(i) {
+      opener = items[i]; show(i);
+      if (typeof lb.showModal === 'function') lb.showModal(); else lb.setAttribute('open', '');
+      lock(true);
+    }
+    function close() { if (lb.open) { if (typeof lb.close === 'function') lb.close(); else lb.removeAttribute('open'); } }
+    items.forEach(function (it, i) { it.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('close', function () { lock(false); if (opener) opener.focus({ preventScroll: true }); });
+    lb.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-lb]');
+      if (b) { var a = b.getAttribute('data-lb'); if (a === 'close') close(); else show(idx + (a === 'next' ? 1 : -1)); return; }
+      if (e.target === lb) close();
+    });
+    lb.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+    });
+    var x0 = null;
+    lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
+    });
+  }
+
+  initUi(); initSearch(); initRoutes(); renderTariff(); initGallery();
   load();
   setInterval(function () { if (!d.hidden) load(); }, 5 * 60 * 1000);
 })(window, document);
