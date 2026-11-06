@@ -89,13 +89,27 @@
 
   /* ---------------- search card ---------------- */
   var sFrom = $('#s-from'), sTo = $('#s-to'), sDate = $('#s-date');
+  var CITY_GROUPS = (function () {
+    var g = { ua: [], eu: [], kpp: [] };
+    GEO.search.forEach(function (c) {
+      if (/КПП|МАПП|Мапп|^Чоп$|Шегині|Рава-Руська|Медика|Захонь/i.test(c) && !coordsKnown(c)) g.kpp.push(c);
+      else if (GEO.ua[c] || /Броди|Дубно/.test(c)) g.ua.push(c); else g.eu.push(c);
+    });
+    Object.keys(g).forEach(function (k) { g[k].sort(function (a, b) { return a.localeCompare(b, 'uk'); }); });
+    return [['Україна', g.ua], ['Європа', g.eu], ['Пункти пропуску', g.kpp]];
+  })();
+  function coordsKnown(c) { return !!(GEO.ua[c] || GEO.eu[c]); }
+  function cityLabel(c) { return String(c).replace(/^Мапп /, 'МАПП '); }
   function optionsHtml(value) {
-    return '<option value="">Оберіть місто</option>' + GEO.search.map(function (c) { return '<option' + (c === value ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
+    return '<option value="">Оберіть місто</option>' + CITY_GROUPS.filter(function (g) { return g[1].length; }).map(function (g) {
+      return '<optgroup label="' + g[0] + '">' + g[1].map(function (c) { return '<option value="' + esc(c) + '"' + (c === value ? ' selected' : '') + '>' + esc(cityLabel(c)) + '</option>'; }).join('') + '</optgroup>';
+    }).join('');
   }
   function today() { var t = new Date(); t.setMinutes(t.getMinutes() - t.getTimezoneOffset()); return t.toISOString().slice(0, 10); }
   function renderSearch(animate) {
     var meta = $('#s-meta'), price = $('#s-price');
     var f = sFrom.value, t = sTo.value, q = quote(f, t), html;
+    if (!ready) { meta.textContent = 'Рахуємо ціну…'; price.innerHTML = '<span class="skeleton"></span>'; return; }
     if (!f || !t) { meta.textContent = 'Оберіть міста'; html = '—'; }
     else if (f === t) { meta.textContent = 'Оберіть різні міста'; html = '—'; }
     else if (!q) { meta.textContent = 'Ціну назве менеджер'; html = 'за запитом'; }
@@ -127,6 +141,7 @@
   var LIMIT = 9, showAll = false, filterText = '', origin = 'all';
   var CHIPS = [['all', 'Усі'], ['Київ', 'З Києва'], ['Львів', 'Зі Львова'], ['Одеса', 'З Одеси'], ['eu', 'З Європи']];
   function isUa(n) { return !!GEO.ua[norm(n)]; }
+  function routeListFor(o) { var keep = origin; origin = o; var l = routeList(); origin = keep; return l; }
   function routeList() {
     var list = visibleRoutes();
     if (origin === 'eu') list = list.filter(function (r) { return !isUa(r.from); });
@@ -135,7 +150,7 @@
     return list;
   }
   function priceBox(q, c) {
-    return '<span class="route__price' + (cls === c ? ' is-current' : '') + '"><small>' + icon(c === 'lux' ? 'moon' : 'sun') + CLASS_NAME[c] + ' · ' + CLASS_TIME[c] + '</small><b>' + (q ? uah(q[c].uah) : 'за запитом') + '</b></span>';
+    return '<span class="route__price' + (cls === c ? ' is-current' : '') + '"><small>' + icon(c === 'lux' ? 'moon' : 'sun') + CLASS_NAME[c] + ' <i>' + CLASS_TIME[c] + '</i></small><b>' + (q ? uah(q[c].uah) : 'за запитом') + '</b></span>';
   }
   function renderRoutes(quiet) {
     var host = $('#routes-list'); if (!host) return;
@@ -145,7 +160,8 @@
     host.innerHTML = shown.map(function (r, i) {
       var q = quote(r.from, r.to);
       return '<article class="route" style="--i:' + (i % LIMIT) + (quiet ? ';animation:none' : '') + '">' +
-        '<div class="route__line"><span class="route__city">' + esc(r.from) + '</span><span class="route__track" role="img" aria-label="до">' + icon('bus') + '</span><span class="route__city route__city--to">' + esc(r.to) + '</span></div>' +
+        '<h3 class="sr">' + esc(r.from) + ' – ' + esc(r.to) + '</h3>' +
+        '<div class="route__line" aria-hidden="true"><span class="route__city">' + esc(r.from) + '</span><span class="route__track" role="img" aria-label="до">' + icon('bus') + '</span><span class="route__city route__city--to">' + esc(r.to) + '</span></div>' +
         (q ? '<div class="route__meta"><span>' + icon('clock') + '~' + fmtHours(q.hours) + '</span><span>' + icon('route') + '≈ ' + fmt(q.km) + ' км</span></div>' : '') +
         '<div class="route__prices">' + priceBox(q, 'comfort') + priceBox(q, 'lux') + '</div>' +
         '<button class="btn btn--blue btn--block" type="button" data-book="' + esc(r.from) + '|' + esc(r.to) + '">Забронювати</button>' +
@@ -154,15 +170,19 @@
     var more = $('#r-more');
     more.hidden = !!filterText || list.length <= LIMIT;
     more.textContent = showAll ? 'Згорнути' : 'Показати всі маршрути (' + list.length + ')';
-    $('#r-empty').hidden = list.length > 0;
+    var empty = $('#r-empty');
+    empty.hidden = list.length > 0;
+    if (!list.length) empty.innerHTML = origin !== 'all' && filterText && routeListFor('all').length
+      ? 'У вибраному фільтрі такого напрямку немає. <button type="button" class="linklike" data-chip-all>Шукати серед усіх маршрутів</button>'
+      : 'Такого міста в розкладі немає. Напишіть менеджеру: підберемо рейс або індивідуальний трансфер.';
     renderPopular(); updateMins();
   }
   function renderPopular() {
     var host = $('#popular'); if (!host) return;
     var html = POPULAR.map(function (p, i) {
       var q = quote(p.from, p.to);
-      return '<button type="button" class="pop" data-reveal style="--d:' + (i * 0.08) + 's" data-book="' + esc(p.from) + '|' + esc(p.to) + '" aria-label="Забронювати ' + esc(p.from) + ' – ' + esc(p.to) + '">' +
-        '<picture><source srcset="images/' + p.img + '.webp" type="image/webp"><img src="images/' + p.img + '.jpg" alt="" loading="lazy"></picture>' +
+      return '<button type="button" class="pop" data-reveal style="--d:' + (i * 0.08) + 's" data-book="' + esc(p.from) + '|' + esc(p.to) + '" aria-label="Забронювати ' + esc(p.from) + ' – ' + esc(p.to) + (q ? ', від ' + plain(uah(q.comfort.uah)) : '') + '">' +
+        '<picture><source srcset="images/' + p.img + '-640.webp 640w, images/' + p.img + '.webp 1200w" sizes="(max-width: 720px) 100vw, (max-width: 980px) 50vw, 400px" type="image/webp"><img src="images/' + p.img + '.jpg" alt="" loading="lazy"></picture>' +
         '<span class="pop__tag">' + icon('star') + 'Популярний</span><span class="pop__go">' + icon('arrow') + '</span>' +
         '<span class="pop__route">' + esc(p.from) + icon('arrow') + esc(p.to) + '</span>' +
         '<span class="pop__price"><span>' + (q ? '~' + fmtHours(q.hours) + ' у дорозі' : '') + '</span><span>від <b>' + (q ? uah(q.comfort.uah) : '—') + '</b></span></span>' +
@@ -177,7 +197,7 @@
     var min = { comfort: Infinity, lux: Infinity };
     visibleRoutes().forEach(function (r) { var q = quote(r.from, r.to); if (!q) return; if (q.comfort.uah < min.comfort) min.comfort = q.comfort.uah; if (q.lux.uah < min.lux) min.lux = q.lux.uah; });
     $$('[data-min]').forEach(function (n) { var v = min[n.getAttribute('data-min')]; n.textContent = isFinite(v) ? uah(v) : '—'; });
-    $('#dock-min').textContent = isFinite(min[cls]) ? 'від ' + uah(min[cls]) : '';
+    $('#dock-min').textContent = ready && isFinite(min[cls]) ? 'від ' + uah(min[cls]) : '';
   }
   function initRoutes() {
     $('#r-chips').innerHTML = CHIPS.map(function (c) { return '<button type="button" class="chip" data-origin="' + c[0] + '" aria-pressed="' + (c[0] === origin) + '">' + c[1] + '</button>'; }).join('');
@@ -193,6 +213,7 @@
       if (!showAll) $('#routes-list').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     });
     d.addEventListener('click', function (e) {
+      if (e.target.closest('[data-chip-all]')) { $('.chip[data-origin="all"]').click(); return; }
       var b = e.target.closest('[data-book]'); if (!b) return;
       var p = b.getAttribute('data-book').split('|');
       openForm('booking', { from: p[0], to: p[1], date: sDate.value });
@@ -245,7 +266,7 @@
     $('#faq-list').innerHTML = (DATA.faq || []).map(function (f, i) {
       return '<div class="qa' + (i === 0 ? ' is-open' : '') + '" data-reveal style="--d:' + (i % 6) * 0.05 + 's">' +
         '<button class="qa__q" type="button" id="qq' + i + '" aria-expanded="' + (i === 0) + '" aria-controls="qa' + i + '">' + esc(f.q) + '<span class="qa__plus" aria-hidden="true">' + icon('x') + '</span></button>' +
-        '<div class="qa__a" id="qa' + i + '" role="region" aria-labelledby="qq' + i + '"><div><p>' + esc(f.a) + '</p></div></div></div>';
+        '<div class="qa__a" id="qa' + i + '" role="region" aria-labelledby="qq' + i + '"' + (i === 0 ? '' : ' inert') + '><div><p>' + esc(f.a) + '</p></div></div></div>';
     }).join('');
 
     $('#managers').innerHTML = (DATA.managers || []).map(function (m, i) {
@@ -263,44 +284,71 @@
   d.addEventListener('click', function (e) {
     var q = e.target.closest('.qa__q'); if (!q) return;
     var item = q.parentElement, open = !item.classList.contains('is-open');
-    $$('.qa.is-open').forEach(function (x) { if (x !== item) { x.classList.remove('is-open'); $('.qa__q', x).setAttribute('aria-expanded', 'false'); } });
-    item.classList.toggle('is-open', open); q.setAttribute('aria-expanded', String(open));
+    $$('.qa.is-open').forEach(function (x) { if (x !== item) { x.classList.remove('is-open'); $('.qa__q', x).setAttribute('aria-expanded', 'false'); $('.qa__a', x).inert = true; } });
+    item.classList.toggle('is-open', open); q.setAttribute('aria-expanded', String(open)); $('.qa__a', item).inert = !open;
   });
 
   /* ---------------- data loading ---------------- */
-  var lastJson = '', rateDone = false, rateLive = false;
+  var lastJson = '', rateLive = false, rateBusy = false, ready = false;
+  function num(x) { var n = +x; return isFinite(n) ? n : NaN; }
+  function cleanTiers(t) {
+    if (!Array.isArray(t)) return null;
+    var out = t.map(function (r) { return Array.isArray(r) ? r.slice(0, 4).map(num) : []; })
+      .filter(function (r) { return r.length === 4 && r.every(function (n) { return !isNaN(n) && n >= 0; }); });
+    return out.length ? out : null;
+  }
+  function cleanDur(o) {
+    var out = {};
+    if (o && typeof o === 'object') Object.keys(o).forEach(function (k) { var v = o[k] || {}, h = num(v.hours), km = num(v.km); if (h > 0) out[k] = { hours: h, km: km > 0 ? km : 0 }; });
+    return out;
+  }
   function applyData(data, raw) {
     if (!data || !Array.isArray(data.routes)) return false;
     if (raw === lastJson) return true;
+    var first = !lastJson;
     lastJson = raw; DATA = data;
-    if (data.pricing) {
-      if (data.pricing.tiers && data.pricing.tiers.length) P.tiers = data.pricing.tiers;
-      if (data.pricing.eur_rate && !rateLive) P.eur_rate = +data.pricing.eur_rate;
-      if (data.pricing.extra_hours != null) P.extra_hours = +data.pricing.extra_hours;
-      (data.pricing.discounts || []).forEach(function (x) {
-        if (/діт/i.test(x.label)) DISC.child = x.pct / 100;
-        if (/пенс/i.test(x.label)) DISC.pens = x.pct / 100;
-      });
-    }
-    if (data.durations) DUR = data.durations;
+    var pr = data.pricing || {};
+    var tiers = cleanTiers(pr.tiers); if (tiers) P.tiers = tiers;
+    if (num(pr.eur_rate) > 20 && num(pr.eur_rate) < 200 && !rateLive) P.eur_rate = num(pr.eur_rate);
+    if (num(pr.extra_hours) >= 0) P.extra_hours = num(pr.extra_hours);
+    (Array.isArray(pr.discounts) ? pr.discounts : []).forEach(function (x) {
+      var v = num(x && x.pct); if (!(v >= 0 && v < 100)) return;
+      if (/діт/i.test(x.label)) DISC.child = v / 100;
+      if (/пенс/i.test(x.label)) DISC.pens = v / 100;
+    });
+    if (data.durations) DUR = cleanDur(data.durations);
     if (data.bridge && w.RB_bridge) w.RB_bridge.configure(data.bridge);
-    renderContent(); renderTariff(); renderSearch(false); renderRoutes(); updateBookingSum(false);
-    if (!data.pricing || data.pricing.rate_auto !== false) fetchRate();
+    rateAuto = pr.rate_auto !== false;
+    var n = visibleRoutes().length;
+    $$('[data-routes-count]').forEach(function (el) { el.setAttribute('data-count', n); if (!el.dataset.counted) el.textContent = n; });
+    var render = function () {
+      ready = true;
+      renderContent(); renderTariff(); renderSearch(!first); renderRoutes(!first); updateBookingSum(false);
+    };
+    if (first && rateAuto) fetchRate(1500).then(render); else { render(); if (rateAuto) fetchRate(); }
     return true;
   }
+  var rateAuto = true;
   function load(i) {
     i = i || 0; if (i >= SOURCES.length) return Promise.resolve(false);
+    if (i > 0 && lastJson) return Promise.resolve(false); // bundled copy is only a first-load fallback
     var url = SOURCES[i] + '?v=' + Math.floor(Date.now() / 60000);
     return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.text(); })
       .then(function (txt) { return applyData(JSON.parse(txt), txt) || load(i + 1); })
       .catch(function () { return load(i + 1); });
   }
-  function fetchRate() {
-    if (rateDone) return; rateDone = true;
-    fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=EUR&json').then(function (r) { return r.json(); }).then(function (j) {
+  /* NBU rate. Resolves after the rate arrived or after `wait` ms, whichever is first. */
+  function fetchRate(wait) {
+    if (rateLive || rateBusy) return Promise.resolve();
+    rateBusy = true;
+    var p = fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=EUR&json').then(function (r) { return r.json(); }).then(function (j) {
       var r = j && j[0] && +j[0].rate;
-      if (r && r > 20 && r < 200) { rateLive = true; if (Math.abs(r - P.eur_rate) > 0.0001) { P.eur_rate = r; renderTariff(); renderSearch(false); renderRoutes(true); updateBookingSum(false); } }
-    }).catch(function () { rateDone = false; });
+      if (r && r > 20 && r < 200) {
+        rateLive = true;
+        if (Math.abs(r - P.eur_rate) > 0.0001) { P.eur_rate = r; if (ready) { renderTariff(); renderSearch(false); renderRoutes(true); updateBookingSum(false); } }
+      }
+    }).catch(function () {}).then(function () { rateBusy = false; });
+    return wait ? Promise.race([p, new Promise(function (res) { setTimeout(res, wait); })]) : p;
   }
 
   /* ---------------- modal + forms ---------------- */
@@ -328,9 +376,9 @@
     if (kind === 'booking') {
       h = '<div class="form__grid">' + citySelect('from', 'Звідки', pre.from) + citySelect('to', 'Куди', pre.to) + '</div>' +
         dateField('date', 'Дата поїздки', pre.date) +
-        '<div class="form__label">Клас і виїзд<div class="seg">' +
+        '<fieldset><legend>Клас і виїзд</legend><div class="seg">' +
           '<label><input type="radio" name="f-cls" value="comfort"' + (cls === 'comfort' ? ' checked' : '') + '><span>' + icon('sun') + '<b>Comfort</b><small>08:00</small></span></label>' +
-          '<label><input type="radio" name="f-cls" value="lux"' + (cls === 'lux' ? ' checked' : '') + '><span>' + icon('moon') + '<b>Lux</b><small>18:00</small></span></label></div></div>' +
+          '<label><input type="radio" name="f-cls" value="lux"' + (cls === 'lux' ? ' checked' : '') + '><span>' + icon('moon') + '<b>Lux</b><small>18:00</small></span></label></div></fieldset>' +
         '<div class="pax">' + stepper('adults', 'Дорослі', '', 1) + stepper('children', 'Діти до 16 років', 'знижка ' + Math.round(DISC.child * 100) + '%', 0) + stepper('pens', 'Пенсіонери', 'знижка ' + Math.round(DISC.pens * 100) + '%', 0) + '</div>' +
         '<div class="sum" id="f-sum" aria-live="polite"></div>' +
         '<div class="form__grid">' + nameField + phoneField + '</div>';
@@ -346,14 +394,27 @@
     } else if (kind === 'callback') {
       h = '<div class="form__grid">' + nameField + phoneField + '</div><label>Коментар (необов\'язково)<textarea name="comment" maxlength="500" placeholder="Куди і коли плануєте поїздку"></textarea></label>';
     } else if (kind === 'review') {
-      h = nameField + '<div class="form__label">Оцінка<div class="stars-input">' +
+      h = nameField + '<fieldset><legend>Оцінка</legend><div class="stars-input">' +
         [5, 4, 3, 2, 1].map(function (n) { return '<input type="radio" name="stars" id="st' + n + '" value="' + n + '"' + (n === 5 ? ' checked' : '') + '><label for="st' + n + '" aria-label="' + n + ' з 5">' + icon('star') + '</label>'; }).join('') +
-        '</div></div><label>Відгук<textarea name="text" required maxlength="1000"></textarea></label>';
+        '</div></fieldset><label>Відгук<textarea name="text" required maxlength="1000"></textarea></label>';
     }
     h += '<p class="form__err" id="f-err" role="alert"></p><button class="btn btn--amber btn--lg btn--block" type="submit">' + FORMS[kind].submit + '</button>';
     form.innerHTML = h;
   }
-  function lock(on) { d.body.classList.toggle('is-locked', on); }
+  var lockY = 0, locks = 0;
+  function lock(on) {
+    var b = d.body;
+    if (on) {
+      if (locks++ > 0) return;
+      lockY = w.scrollY;
+      b.style.top = -lockY + 'px'; b.classList.add('is-locked');
+    } else {
+      if (locks === 0) return;
+      if (--locks > 0) return;
+      b.classList.remove('is-locked'); b.style.top = '';
+      w.scrollTo({ top: lockY, left: 0, behavior: 'instant' });
+    }
+  }
   function openForm(kind, pre) {
     if (!FORMS[kind]) return;
     current = kind;
@@ -361,19 +422,20 @@
     build(kind, pre);
     form.hidden = false; $('#modal-done').hidden = true;
     if (kind === 'booking') { syncSteppers(); updateBookingSum(false); }
-    if (!modal.open) { if (typeof modal.showModal === 'function') modal.showModal(); else modal.setAttribute('open', ''); }
-    lock(true); form.scrollTop = 0;
+    if (!modal.open) { if (typeof modal.showModal === 'function') modal.showModal(); else modal.setAttribute('open', ''); lock(true); }
+    form.scrollTop = 0;
     var first = kind === 'booking' ? form.querySelector('select:invalid, input[name="name"]') : form.querySelector('input, select, textarea');
     if (first && w.matchMedia('(pointer: fine)').matches) first.focus();
   }
-  function closeModal() { if (modal.open) { if (typeof modal.close === 'function') modal.close(); else modal.removeAttribute('open'); } lock(false); }
+  function closeModal() { if (modal.open) { if (typeof modal.close === 'function') modal.close(); else { modal.removeAttribute('open'); lock(false); } } }
   modal.addEventListener('close', function () { lock(false); });
+  function outside(el, e) { var r = el.getBoundingClientRect(); return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom; }
+  var downOutside = false;
+  modal.addEventListener('pointerdown', function (e) { downOutside = e.target === modal && outside(modal, e); });
   modal.addEventListener('click', function (e) {
     if (e.target.closest('[data-close]')) { closeModal(); return; }
-    if (e.target === modal) {
-      var r = modal.getBoundingClientRect();
-      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeModal();
-    }
+    if (downOutside && e.target === modal && outside(modal, e)) closeModal();
+    downOutside = false;
   });
   d.addEventListener('click', function (e) {
     var b = e.target.closest('[data-open]'); if (!b) return;
@@ -443,9 +505,18 @@
     if (phoneBad && bad.indexOf(F.phone) === -1) bad.push(F.phone);
     var sameCity = F.from && F.to && F.from.value && F.from.value === F.to.value;
     if (sameCity && bad.indexOf(F.to) === -1) bad.push(F.to);
+    var paxBad = F.pax && !/^[1-7]$/.test(String(F.pax.value).trim());
+    if (paxBad && bad.indexOf(F.pax) === -1) bad.push(F.pax);
+    $$('input, select, textarea', form).forEach(function (i) { i.removeAttribute('aria-invalid'); i.removeAttribute('aria-describedby'); });
     if (bad.length) {
-      bad.forEach(function (i) { i.classList.add('is-bad'); });
-      err.textContent = phoneBad ? 'Перевірте номер телефону: потрібно 10–15 цифр.' : sameCity ? 'Оберіть різні міста.' : 'Заповніть позначені поля.';
+      var msgs = [];
+      var empty = bad.filter(function (i) { return !String(i.value).trim(); });
+      if (empty.length) msgs.push('Заповніть позначені поля.');
+      if (phoneBad) msgs.push('Номер телефону має містити 10–15 цифр.');
+      if (sameCity) msgs.push('Оберіть різні міста.');
+      if (paxBad && String(F.pax.value).trim()) msgs.push('Пасажирів може бути від 1 до ' + PAX_MAX + '.');
+      bad.forEach(function (i) { i.classList.add('is-bad'); i.setAttribute('aria-invalid', 'true'); i.setAttribute('aria-describedby', 'f-err'); });
+      err.textContent = msgs.join(' ') || 'Перевірте позначені поля.';
       bad[0].focus(); return;
     }
     var L = {}, ctx = { 'Сайт': SITE_TAG };
@@ -478,10 +549,10 @@
     }
     var btn = form.querySelector('button[type="submit"]'), label = btn.textContent;
     btn.disabled = true; btn.textContent = 'Надсилаємо…';
-    var send = w.RB_bridge && w.RB_bridge.ready() ? w.RB_bridge.lead({ type: FORMS[current].type, fields: L, context: ctx }) : Promise.resolve(false);
+    var send = w.RB_bridge && w.RB_bridge.supported() ? w.RB_bridge.lead({ type: FORMS[current].type, fields: L, context: ctx }) : Promise.resolve(false);
     send.then(function (ok) {
       btn.disabled = false; btn.textContent = label;
-      if (ok) { form.hidden = true; $('#modal-done').hidden = false; return; }
+      if (ok) { form.hidden = true; $('#modal-done').hidden = false; $('#modal-done [data-close]').focus(); return; }
       err.innerHTML = 'Не вдалося надіслати заявку. Перевірте інтернет і спробуйте ще раз або напишіть нам у <a href="' + esc(safeUrl((DATA.contacts || {}).telegram) || 'https://t.me/pereviznyk001') + '" target="_blank" rel="noopener">Telegram</a>.';
     });
   });
@@ -499,18 +570,30 @@
   function countUp(el) {
     var end = +el.getAttribute('data-count'); if (!end || reduceMotion) return;
     var t0 = null;
-    function step(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 1400); el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }
-    el.textContent = '0'; requestAnimationFrame(step);
+    function step(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 1400), e2 = +el.getAttribute('data-count') || end; el.textContent = Math.round(e2 * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }
+    el.dataset.counted = '1'; el.textContent = '0'; requestAnimationFrame(step);
   }
   function initUi() {
     var top = $('#top'), burger = $('#burger'), nav = $('#nav'), dock = $('.dock');
     function onScroll() { top.classList.toggle('is-solid', w.scrollY > 24); }
     onScroll(); w.addEventListener('scroll', onScroll, { passive: true });
+    var bg = [$('main'), $('.foot'), $('.dock'), $('.skip')];
     function setMenu(open) {
+      if (open === nav.classList.contains('is-open')) return;
       nav.classList.toggle('is-open', open); top.classList.toggle('is-open', open);
       burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? 'Закрити меню' : 'Меню');
+      bg.forEach(function (el) { if (el) el.inert = open; });
       lock(open);
+      if (open) setTimeout(function () { var f = $('a', nav); if (f && nav.classList.contains('is-open')) f.focus({ preventScroll: true }); }, 60);
     }
+    // keep Tab inside the open menu (burger + menu links)
+    d.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
+      var items = [burger].concat($$('a, button', nav)), i = items.indexOf(d.activeElement);
+      if (i === -1) { e.preventDefault(); items[0].focus(); return; }
+      if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+      else if (e.shiftKey && i === 0) { e.preventDefault(); items[items.length - 1].focus(); }
+    });
     burger.addEventListener('click', function () { setMenu(!nav.classList.contains('is-open')); });
     nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
     d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); burger.focus(); } });
@@ -530,6 +613,11 @@
       dio.observe($('#search'));
     }
     $$('[data-count]').forEach(countUp);
+    // pause decorative animations of off-screen blocks
+    if ('IntersectionObserver' in w) {
+      var po = new IntersectionObserver(function (es) { es.forEach(function (en) { en.target.classList.toggle('is-off', !en.isIntersecting); }); });
+      $$('.hero, .cta, #managers, .section--dark').forEach(function (el) { po.observe(el); });
+    }
     $('#year').textContent = new Date().getFullYear();
     observeReveal(d);
   }
@@ -573,5 +661,5 @@
 
   initUi(); initSearch(); initRoutes(); renderTariff(); initGallery();
   load();
-  setInterval(function () { if (!d.hidden) load(); }, 5 * 60 * 1000);
+  setInterval(function () { if (d.hidden) return; load(); if (rateAuto && ready && !rateLive) fetchRate(); }, 5 * 60 * 1000);
 })(window, document);

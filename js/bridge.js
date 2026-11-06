@@ -47,6 +47,15 @@
   }
 
   var QKEY = 'rb_lead_queue';
+  var waiters = [];
+  function whenReady(ms) {
+    if (cfg.inbox) return Promise.resolve(true);
+    return new Promise(function (res) {
+      var t = setTimeout(function () { res(false); }, ms);
+      waiters.push(function () { clearTimeout(t); res(true); });
+    });
+  }
+  function keyOf(lead) { try { return JSON.stringify(lead); } catch (e) { return ''; } }
   function queue(fn) { var q = []; try { q = JSON.parse(localStorage.getItem(QKEY) || '[]'); } catch (e) {} q = fn(q) || q; try { localStorage.setItem(QKEY, JSON.stringify(q.slice(-10))); } catch (e) {} }
   function unqueue(ts) { queue(function (q) { return q.filter(function (x) { return x.ts !== ts; }); }); }
 
@@ -55,17 +64,31 @@
       var first = !cfg.inbox;
       if (c && c.inbox && c.pub) cfg = { inbox: c.inbox, pub: c.pub };
       if (first && cfg.inbox) { // повторно відправити заявки, що не пішли раніше
-        try { JSON.parse(localStorage.getItem(QKEY) || '[]').forEach(function (p) { publish(p).then(function (ok) { if (ok) unqueue(p.ts); }); }); } catch (e) {}
+        waiters.splice(0).forEach(function (f) { f(); });
+        try { JSON.parse(localStorage.getItem(QKEY) || '[]').forEach(function (p) { var b = Object.assign({}, p); delete b.key; publish(b).then(function (ok) { if (ok) unqueue(p.ts); }); }); } catch (e) {}
       }
     },
     ready: function () { return !!(subtle && cfg.inbox && cfg.pub); },
+    supported: function () { return !!subtle; },
+    /* Same lead submitted again (e.g. after a failed try) reuses the queued payload,
+       so the bot never receives a duplicate. Waits up to 8 s for site.json to load. */
     lead: function (lead) {
-      var payload = {
-        kind: 'lead', sid: SID, page: location.href, ua: navigator.userAgent.slice(0, 120), lang: navigator.language,
-        ts: new Date().toISOString(), ref: document.referrer || '', lead: lead
-      };
-      queue(function (q) { q.push(payload); return q; });
-      return publish(payload).then(function (ok) { if (ok) unqueue(payload.ts); return ok; });
+      if (!subtle) return Promise.resolve(false);
+      var key = keyOf(lead), payload = null;
+      queue(function (q) {
+        payload = q.filter(function (x) { return x.key === key; })[0] || null;
+        if (!payload) {
+          payload = { kind: 'lead', sid: SID, page: location.href, ua: navigator.userAgent.slice(0, 120), lang: navigator.language,
+            ts: new Date().toISOString(), ref: document.referrer || '', lead: lead, key: key };
+          q.push(payload);
+        }
+        return q;
+      });
+      var body = Object.assign({}, payload); delete body.key;
+      return whenReady(8000).then(function (ok) {
+        if (!ok) return false;
+        return publish(body).then(function (sent) { if (sent) unqueue(payload.ts); return sent; });
+      });
     }
   };
 })(window);

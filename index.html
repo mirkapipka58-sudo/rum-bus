@@ -9,13 +9,12 @@
 <meta name="theme-color" content="#071a3d">
 <meta property="og:title" content="RUM-BUS — Україна – Європа від дверей до дверей">
 <meta property="og:description" content="110 напрямків, виїзди о 08:00 і 18:00, ціна одразу на сайті.">
-<meta property="og:image" content="images/hero.jpg">
+<meta property="og:image" content="https://pashawilliams.github.io/rum-bus/images/hero.jpg">
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="images/hero.webp" type="image/webp">
-<link rel="stylesheet" href="css/style.css">
+<link rel="preload" href="fonts/unbounded-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="images/hero-1280.webp" type="image/webp" imagesrcset="images/hero-820.webp 820w, images/hero-1280.webp 1280w, images/hero.webp 1920w" imagesizes="100vw">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -87,8 +86,8 @@
 <main id="main">
   <section class="hero" aria-labelledby="hero-title">
     <picture class="hero__bg">
-      <source srcset="images/hero.webp" type="image/webp">
-      <img src="images/hero.jpg" alt="" fetchpriority="high">
+      <source srcset="images/hero-820.webp 820w, images/hero-1280.webp 1280w, images/hero.webp 1920w" sizes="100vw" type="image/webp">
+      <img src="images/hero.jpg" alt="" fetchpriority="high" width="1920" height="1080">
     </picture>
     <div class="hero__glow" aria-hidden="true"></div>
     <div class="wrap hero__in">
@@ -97,7 +96,7 @@
         <h1 class="hero__title" id="hero-title">З України до Європи <span class="grad">від дверей до дверей</span></h1>
         <p class="hero__lead">Мікроавтобуси на 7 пасажирів, два водії в рейсі, Wi‑Fi і зарядки. Польща, Чехія, Німеччина, Австрія, Італія, Франція, Іспанія, Португалія та Молдова.</p>
         <ul class="hero__stats">
-          <li><svg class="ic"><use href="#i-route"/></svg><b data-count="110">110</b><span>напрямків</span></li>
+          <li><svg class="ic"><use href="#i-route"/></svg><b data-count="110" data-routes-count>110</b><span>напрямків</span></li>
           <li><svg class="ic"><use href="#i-clock"/></svg><b>08:00 · 18:00</b><span>щоденні виїзди</span></li>
           <li><svg class="ic"><use href="#i-chat"/></svg><b>24/7</b><span>підтримка</span></li>
         </ul>
@@ -173,7 +172,7 @@
       </div>
       <div class="classes">
         <article class="cls-card" data-reveal>
-          <picture class="cls-card__img"><source srcset="images/comfort-3.webp" type="image/webp"><img src="images/comfort-3.jpg" alt="Шкіряне крісло в салоні мікроавтобуса" loading="lazy" width="787" height="1400"></picture>
+          <picture class="cls-card__img"><source srcset="images/comfort-3-560.webp 560w, images/comfort-3.webp 787w" sizes="(max-width: 720px) 100vw, 600px" type="image/webp"><img src="images/comfort-3.jpg" alt="Шкіряне крісло в салоні мікроавтобуса" loading="lazy" width="787" height="1400"></picture>
           <div class="cls-card__body">
             <div class="cls-card__top"><span class="cls-card__icon"><svg class="ic"><use href="#i-sun"/></svg></span><div><h3>Comfort</h3><p>Денний рейс, виїзд о 08:00</p></div></div>
             <p class="cls-card__from">від <b data-min="comfort">—</b></p>
@@ -181,7 +180,7 @@
           </div>
         </article>
         <article class="cls-card cls-card--lux" data-reveal>
-          <picture class="cls-card__img"><source srcset="images/lux-1.webp" type="image/webp"><img src="images/lux-1.jpg" alt="Салон із фіолетовими кріслами і підсвіткою стелі" loading="lazy" width="900" height="1200"></picture>
+          <picture class="cls-card__img"><source srcset="images/lux-1-600.webp 600w, images/lux-1.webp 900w" sizes="(max-width: 720px) 100vw, 600px" type="image/webp"><img src="images/lux-1.jpg" alt="Салон із фіолетовими кріслами і підсвіткою стелі" loading="lazy" width="900" height="1200"></picture>
           <div class="cls-card__body">
             <div class="cls-card__top"><span class="cls-card__icon"><svg class="ic"><use href="#i-moon"/></svg></span><div><h3>Lux</h3><p>Вечірній рейс, виїзд о 18:00</p></div></div>
             <p class="cls-card__from">від <b data-min="lux">—</b></p>
@@ -212,13 +211,13 @@
         <p>Шкіряні крісла з підголівниками, підсвітка, зарядки біля місць. Натисніть на фото, щоб роздивитися.</p>
       </div>
       <div class="gallery" id="gallery">
-        <button type="button" class="gallery__item gallery__item--big" data-reveal style="--d:0s" data-full="images/lux-1.jpg" aria-label="Відкрити фото: Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою"><picture><source srcset="images/lux-1.webp" type="image/webp"><img src="images/lux-1.jpg" alt="Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою" loading="lazy" width="900" height="1200"></picture></button>
-        <button type="button" class="gallery__item gallery__item--tall" data-reveal style="--d:0.06s" data-full="images/comfort-2.jpg" aria-label="Відкрити фото: Салон із бежевими кріслами і неоновою підсвіткою"><picture><source srcset="images/comfort-2.webp" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон із бежевими кріслами і неоновою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/lux-3.jpg" aria-label="Відкрити фото: Фіолетове крісло біля вікна"><picture><source srcset="images/lux-3.webp" type="image/webp"><img src="images/lux-3.jpg" alt="Фіолетове крісло біля вікна" loading="lazy" width="900" height="1200"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.18s" data-full="images/comfort-3.jpg" aria-label="Відкрити фото: Шкіряне крісло з подушкою під голову"><picture><source srcset="images/comfort-3.webp" type="image/webp"><img src="images/comfort-3.jpg" alt="Шкіряне крісло з подушкою під голову" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item gallery__item--wide" data-reveal style="--d:0s" data-full="images/comfort-1.jpg" aria-label="Відкрити фото: Ряди крісел під стелею з жовтою підсвіткою"><picture><source srcset="images/comfort-1.webp" type="image/webp"><img src="images/comfort-1.jpg" alt="Ряди крісел під стелею з жовтою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.06s" data-full="images/lux-2.jpg" aria-label="Відкрити фото: Фіолетові крісла і підсвітка стелі"><picture><source srcset="images/lux-2.webp" type="image/webp"><img src="images/lux-2.jpg" alt="Фіолетові крісла і підсвітка стелі" loading="lazy" width="900" height="1200"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/comfort-4.jpg" aria-label="Відкрити фото: Крісло біля вікна з червоною підсвіткою"><picture><source srcset="images/comfort-4.webp" type="image/webp"><img src="images/comfort-4.jpg" alt="Крісло біля вікна з червоною підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item gallery__item--big" data-reveal style="--d:0s" data-full="images/lux-1.webp" aria-label="Відкрити фото: Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою"><picture><source srcset="images/lux-1.webp" type="image/webp"><img src="images/lux-1.jpg" alt="Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item gallery__item--tall" data-reveal style="--d:0.06s" data-full="images/comfort-2.webp" aria-label="Відкрити фото: Салон із бежевими кріслами і неоновою підсвіткою"><picture><source srcset="images/comfort-2.webp" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон із бежевими кріслами і неоновою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/lux-3.webp" aria-label="Відкрити фото: Фіолетове крісло біля вікна"><picture><source srcset="images/lux-3.webp" type="image/webp"><img src="images/lux-3.jpg" alt="Фіолетове крісло біля вікна" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.18s" data-full="images/comfort-3.webp" aria-label="Відкрити фото: Шкіряне крісло з подушкою під голову"><picture><source srcset="images/comfort-3-560.webp 560w, images/comfort-3.webp 787w" sizes="(max-width: 720px) 100vw, 600px" type="image/webp"><img src="images/comfort-3.jpg" alt="Шкіряне крісло з подушкою під голову" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item gallery__item--wide" data-reveal style="--d:0s" data-full="images/comfort-1.webp" aria-label="Відкрити фото: Ряди крісел під стелею з жовтою підсвіткою"><picture><source srcset="images/comfort-1.webp" type="image/webp"><img src="images/comfort-1.jpg" alt="Ряди крісел під стелею з жовтою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.06s" data-full="images/lux-2.webp" aria-label="Відкрити фото: Фіолетові крісла і підсвітка стелі"><picture><source srcset="images/lux-2.webp" type="image/webp"><img src="images/lux-2.jpg" alt="Фіолетові крісла і підсвітка стелі" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/comfort-4.webp" aria-label="Відкрити фото: Крісло біля вікна з червоною підсвіткою"><picture><source srcset="images/comfort-4.webp" type="image/webp"><img src="images/comfort-4.jpg" alt="Крісло біля вікна з червоною підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
       </div>
     </div>
   </section>
@@ -240,7 +239,7 @@
       <div class="head" data-reveal><h2 id="services-title">Посилки, трансфер і групи</h2></div>
       <div class="services">
         <article class="service" data-reveal>
-          <picture class="service__img"><source srcset="images/parcel.webp" type="image/webp"><img src="images/parcel.jpg" alt="Передача посилки" loading="lazy"></picture>
+          <picture class="service__img"><source srcset="images/parcel-640.webp 640w, images/parcel.webp 1200w" sizes="(max-width: 720px) 100vw, 400px" type="image/webp"><img src="images/parcel.jpg" alt="Передача посилки" loading="lazy"></picture>
           <div class="service__body">
             <span class="service__icon"><svg class="ic"><use href="#i-box"/></svg></span>
             <h3>Посилки Україна ⇄ Європа</h3>
@@ -249,7 +248,7 @@
           </div>
         </article>
         <article class="service" data-reveal>
-          <picture class="service__img"><source srcset="images/airport.webp" type="image/webp"><img src="images/airport.jpg" alt="Аеропорт" loading="lazy"></picture>
+          <picture class="service__img"><source srcset="images/airport-640.webp 640w, images/airport.webp 1200w" sizes="(max-width: 720px) 100vw, 400px" type="image/webp"><img src="images/airport.jpg" alt="Аеропорт" loading="lazy"></picture>
           <div class="service__body">
             <span class="service__icon"><svg class="ic"><use href="#i-plane"/></svg></span>
             <h3>Трансфер з аеропорту</h3>
@@ -258,7 +257,7 @@
           </div>
         </article>
         <article class="service" data-reveal>
-          <picture class="service__img"><source srcset="images/road.webp" type="image/webp"><img src="images/road.jpg" alt="Дорога в Європі" loading="lazy"></picture>
+          <picture class="service__img service__img--cabin"><source srcset="images/comfort-2.webp" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон мікроавтобуса на 7 пасажирів" loading="lazy" width="787" height="1400"></picture>
           <div class="service__body">
             <span class="service__icon"><svg class="ic"><use href="#i-users"/></svg></span>
             <h3>Окремий автобус для групи</h3>
@@ -326,7 +325,7 @@
       <a href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
       <a href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
     </div>
-    <p class="foot__copy">© <span id="year">2026</span> RUM-BUS · Фото: <a href="images/CREDITS.md">Unsplash / Pexels</a></p>
+    <p class="foot__copy">© <span id="year">2026</span> RUM-BUS · Фото міст і послуг: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>
   </div>
 </footer>
 
@@ -360,8 +359,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/geo.js"></script>
-<script src="js/bridge.js"></script>
-<script src="js/app.js"></script>
+<script src="js/geo.js?v=4"></script>
+<script src="js/bridge.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>
