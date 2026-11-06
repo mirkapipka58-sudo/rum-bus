@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RUM-BUS — пасажирські перевезення Україна – Європа</title>
+<meta name="description" content="RUM-BUS: мікроавтобуси з України до Польщі, Чехії, Німеччини, Італії, Іспанії та інших країн Європи. Від адреси до адреси, класи Comfort і Lux, ціна одразу на сайті.">
+<meta name="theme-color" content="#0e4da4">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Перейти до змісту</a>
+
+<div class="notice" id="notice" hidden><a href="#" id="notice-link"></a></div>
+
+<header class="top" id="top">
+  <div class="wrap top__in">
+    <a class="logo" href="#main" aria-label="RUM-BUS, на початок сторінки">
+      <span class="logo__plate">RUM<span class="logo__dash">-</span>BUS</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Основне меню">
+      <a href="#routes">Маршрути</a>
+      <a href="#prices">Як рахуємо ціну</a>
+      <a href="#services">Посилки і трансфер</a>
+      <a href="#reviews">Відгуки</a>
+      <a href="#faq">Питання</a>
+      <a href="#contacts">Контакти</a>
+    </nav>
+    <a class="top__phone" href="tel:+380636881604" data-phone-link><span data-phone-display>+380 63 688 16 04</span></a>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav"><span></span><span></span><span class="sr">Меню</span></button>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO: the direction sign is the search form -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">З України до Європи від дверей до дверей</h1>
+        <p class="hero__lead">Мікроавтобуси на 7 пасажирів, два водії в рейсі, Wi‑Fi і зарядки. Їдемо в Польщу, Чехію, Німеччину, Австрію, Італію, Францію, Іспанію, Португалію та Молдову.</p>
+        <ul class="hero__facts">
+          <li><b>110</b> напрямків у розкладі</li>
+          <li><b>08:00</b> і <b>18:00</b> щоденні виїзди</li>
+          <li><b>24/7</b> на зв'язку менеджер</li>
+        </ul>
+      </div>
+
+      <form class="sign" id="search" autocomplete="off" aria-label="Пошук рейсу">
+        <div class="sign__frame">
+          <div class="sign__row">
+            <label class="sign__label" for="s-from">Звідки</label>
+            <select id="s-from" class="sign__select" required></select>
+          </div>
+          <button type="button" class="sign__swap" id="s-swap" aria-label="Поміняти міста місцями">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v14m0 0-3-3m3 3 3-3M17 20V6m0 0-3 3m3-3 3 3"/></svg>
+          </button>
+          <div class="sign__row">
+            <label class="sign__label" for="s-to">Куди</label>
+            <select id="s-to" class="sign__select" required></select>
+          </div>
+          <div class="sign__meta" id="s-meta" aria-live="polite">Оберіть міста, і ми покажемо час у дорозі та ціну</div>
+        </div>
+        <div class="sign__bottom">
+          <label class="field field--date">
+            <span>Дата</span>
+            <input type="date" id="s-date" required>
+          </label>
+          <fieldset class="cls" data-cls-group>
+            <legend class="sr">Клас і час виїзду</legend>
+            <label><input type="radio" name="cls" value="comfort" checked><span><b>Comfort</b> виїзд 08:00</span></label>
+            <label><input type="radio" name="cls" value="lux"><span><b>Lux</b> виїзд 18:00</span></label>
+          </fieldset>
+        </div>
+        <div class="sign__total">
+          <div class="sign__price" id="s-price"><span class="sign__price-label">Ціна квитка</span><strong>—</strong></div>
+          <button class="btn btn--amber" type="submit">Забронювати місце</button>
+        </div>
+      </form>
+    </div>
+    <div class="road" aria-hidden="true"></div>
+  </section>
+
+  <section class="perks" aria-label="Що є в рейсі">
+    <div class="wrap">
+      <ul class="perks__list" id="perks"></ul>
+    </div>
+  </section>
+
+  <section class="section" id="routes">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Маршрути і ціни</h2>
+        <p>Ціна за одного дорослого пасажира, у гривнях за курсом НБУ. Дітям до 16 років знижка 15%, пенсіонерам 10%.</p>
+      </div>
+      <div class="routes__tools">
+        <label class="search-field">
+          <span class="sr">Знайти місто</span>
+          <input type="search" id="r-filter" placeholder="Знайти місто, наприклад «Прага»">
+        </label>
+        <div class="chips" id="r-chips" role="group" aria-label="Звідки виїжджаємо"></div>
+      </div>
+      <div class="routes" id="routes-list" role="list"></div>
+      <div class="routes__more">
+        <button type="button" class="btn btn--ghost" id="r-more" hidden>Показати всі маршрути</button>
+        <p class="routes__empty" id="r-empty" hidden>Такого міста в розкладі немає. Напишіть менеджеру, і ми підберемо рейс з пересадкою або індивідуальний трансфер.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="prices">
+    <div class="wrap prices">
+      <div class="prices__text">
+        <h2>Як рахуємо ціну</h2>
+        <p>Ціна залежить від часу в дорозі: беремо дорожній маршрут і додаємо <span data-extra-hours>3</span> години на кордон і зупинки. Ціни в євро переводимо в гривні за курсом НБУ на сьогодні.</p>
+        <p class="prices__rate">Курс: €1 = <b data-eur-rate>51,45</b> ₴</p>
+        <dl class="prices__classes">
+          <div><dt>Comfort</dt><dd>Денний рейс, виїзд о 08:00.</dd></div>
+          <div><dt>Lux</dt><dd>Вечірній рейс, виїзд о 18:00.</dd></div>
+        </dl>
+      </div>
+      <div class="tariff">
+        <table>
+          <caption class="sr">Тарифна сітка за часом у дорозі</caption>
+          <thead><tr><th scope="col">У дорозі</th><th scope="col">Comfort</th><th scope="col">Lux</th></tr></thead>
+          <tbody id="tariff"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Посилки і трансфер</h2>
+      </div>
+      <div class="services">
+        <article class="service">
+          <h3>Посилки по Європі</h3>
+          <p>Документи, речі й передачі родині в обидва боки, Україна ⇄ Європа. Заповніть заявку, і менеджер розповість деталі доставки.</p>
+          <button class="btn btn--blue" type="button" data-open="delivery">Відправити посилку</button>
+        </article>
+        <article class="service">
+          <h3>Трансфер з аеропорту</h3>
+          <p>Зустрінемо в аеропорту Європи або відвеземо на рейс. Скажіть номер рейсу, решту організуємо ми.</p>
+          <button class="btn btn--blue" type="button" data-open="transfer">Замовити трансфер</button>
+        </article>
+        <article class="service">
+          <h3>Окремий автобус для групи</h3>
+          <p>Індивідуальне замовлення для родини, команди чи робочої поїздки.</p>
+          <button class="btn btn--blue" type="button" data-open="callback">Обговорити поїздку</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--asphalt" id="reviews">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Що кажуть пасажири</h2>
+      </div>
+      <div class="reviews" id="reviews-list"></div>
+      <button class="btn btn--ghost-light" type="button" data-open="review">Залишити відгук</button>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap faq">
+      <h2>Питання перед поїздкою</h2>
+      <div class="faq__list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="contacts">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Контакти</h2>
+        <p>Відповідаємо цілодобово. Оберіть менеджера й напишіть у зручний месенджер.</p>
+      </div>
+      <div class="managers" id="managers"></div>
+      <div class="contact-line">
+        <a class="btn btn--tg" href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener">Telegram</a>
+        <a class="btn btn--wa" href="https://wa.me/380636881604" data-wa-link target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn btn--blue" type="button" data-open="callback">Передзвоніть мені</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span class="logo__plate logo__plate--small">RUM<span class="logo__dash">-</span>BUS</span>
+    <p>Пасажирські перевезення Україна – Європа. Оплата на офіційний рахунок ФОП за реквізитами від менеджера.</p>
+    <p class="foot__copy">© <span id="year">2026</span> RUM-BUS</p>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Швидкі дії">
+  <a href="https://t.me/pereviznyk001" data-tg-link target="_blank" rel="noopener">Telegram</a>
+  <button type="button" data-open="booking" class="dock__main">Забронювати <small id="dock-min"></small></button>
+  <a href="tel:+380636881604" data-phone-link>Дзвінок</a>
+</nav>
+
+<!-- Modal with forms -->
+<dialog class="modal" id="modal" aria-labelledby="modal-title">
+  <form method="dialog" class="modal__close-form"><button class="modal__close" aria-label="Закрити">×</button></form>
+  <h2 class="modal__title" id="modal-title"></h2>
+  <form class="form" id="lead-form" novalidate></form>
+  <div class="modal__done" id="modal-done" hidden>
+    <p class="modal__done-title">Заявку надіслано</p>
+    <p>Менеджер зв'яжеться з вами найближчим часом.</p>
+    <form method="dialog"><button class="btn btn--blue">Готово</button></form>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/geo.js"></script>
+<script src="js/bridge.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
