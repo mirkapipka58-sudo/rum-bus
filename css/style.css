@@ -472,6 +472,33 @@ button { -webkit-tap-highlight-color: transparent; }
 /* ---------- mobile dock ---------- */
 .dock { display: none; }
 
+/* footer WhatsApp button (styled as a footer link) */
+.foot__wa { display: inline-flex; align-items: center; gap: 8px; width: max-content; margin: 0; padding: 0; border: 0; background: none; font: inherit; font-weight: inherit; color: rgba(255,255,255,.85); cursor: pointer; }
+.foot__wa:hover { color: var(--amber); }
+.foot__wa .ic { color: var(--blue); }
+
+/* ---------- WhatsApp manager chooser ---------- */
+.wa-pick {
+  width: min(400px, 100% - 24px); border: 0; padding: 0; border-radius: 22px; color: var(--ink);
+  background: var(--card); box-shadow: inset 0 0 0 1px var(--line), 0 40px 100px -20px rgba(0,0,0,.9); overflow: hidden;
+}
+.wa-pick::backdrop { background: rgba(4,8,7,.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.wa-pick[open] { animation: pop .3s var(--ease); }
+.wa-pick__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid var(--line); }
+.wa-pick__title { font-size: 18px; margin: 0; }
+.wa-pick__list { display: grid; gap: 8px; padding: 14px; }
+.wa-pick__item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; text-decoration: none; color: var(--ink);
+  background: var(--soft); box-shadow: inset 0 0 0 1px var(--line); transition: transform .2s var(--ease), box-shadow .2s, background-color .2s;
+}
+.wa-pick__item:hover { transform: translateY(-2px); background: var(--sky); box-shadow: inset 0 0 0 1px var(--blue), var(--sh-md); }
+.wa-pick__ava { width: 42px; height: 42px; flex: none; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-head); font-weight: 700; font-size: 17px; background: var(--g-blue); color: var(--on-accent); }
+.wa-pick__who { display: grid; flex: 1; min-width: 0; }
+.wa-pick__who b { font-size: 15.5px; line-height: 1.2; }
+.wa-pick__who small { font-size: 13px; color: var(--muted); }
+.wa-pick__go { width: 38px; height: 38px; flex: none; border-radius: 11px; display: grid; place-items: center; background: var(--wa); color: #fff; }
+.wa-pick__go .ic { width: 20px; height: 20px; }
+
 /* ---------- modal ---------- */
 .modal {
   width: min(560px, 100% - 24px); max-height: min(92dvh, 860px); border: 0; padding: 0; border-radius: 24px; color: var(--ink); background: var(--card);

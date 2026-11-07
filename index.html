@@ -73,8 +73,7 @@
       <div class="nav__extra">
         <a class="btn btn--amber btn--block" href="tel:+380634460657" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 446 06 57</span></a>
         <div class="nav__msg">
-          <a class="btn btn--tg" href="https://t.me/+380634460657" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
-          <a class="btn btn--wa" href="https://wa.me/380634460657" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+          <button class="btn btn--wa" type="button" data-wa-pick><svg class="ic"><use href="#i-wa"/></svg>Написати у WhatsApp</button>
         </div>
       </div>
     </nav>
@@ -299,8 +298,7 @@
         <div class="cta__actions">
           <a class="cta__phone" href="tel:+380634460657" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 446 06 57</span></a>
           <div class="cta__btns">
-            <a class="btn btn--tg" href="https://t.me/+380634460657" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
-            <a class="btn btn--wa" href="https://wa.me/380634460657" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+            <button class="btn btn--wa" type="button" data-wa-pick><svg class="ic"><use href="#i-wa"/></svg>Написати у WhatsApp</button>
             <button class="btn btn--glass" type="button" data-open="callback"><svg class="ic"><use href="#i-phone"/></svg>Передзвоніть мені</button>
           </div>
         </div>
@@ -322,15 +320,14 @@
     </nav>
     <div class="foot__contacts">
       <a href="tel:+380634460657" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span data-phone-display>+380 63 446 06 57</span></a>
-      <a href="https://t.me/+380634460657" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg>Telegram</a>
-      <a href="https://wa.me/380634460657" data-wa-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+      <button type="button" class="foot__wa" data-wa-pick><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</button>
     </div>
     <p class="foot__copy">© <span id="year">2026</span> RUM-BUS · Фото міст і послуг: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>
   </div>
 </footer>
 
 <nav class="dock" aria-label="Швидкі дії">
-  <a href="https://t.me/+380634460657" data-tg-link target="_blank" rel="noopener"><svg class="ic"><use href="#i-tg"/></svg><span>Telegram</span></a>
+  <button type="button" class="dock__wa" data-wa-pick><svg class="ic"><use href="#i-wa"/></svg><span>WhatsApp</span></button>
   <button type="button" data-open="booking" class="dock__main"><span>Забронювати</span><small id="dock-min"></small></button>
   <a href="tel:+380634460657" data-phone-link><svg class="ic"><use href="#i-phone"/></svg><span>Дзвінок</span></a>
 </nav>
@@ -355,6 +352,14 @@
   <button class="lightbox__btn lightbox__prev" type="button" data-lb="prev" aria-label="Попереднє фото"><svg class="ic"><use href="#i-arrow"/></svg></button>
   <button class="lightbox__btn lightbox__next" type="button" data-lb="next" aria-label="Наступне фото"><svg class="ic"><use href="#i-arrow"/></svg></button>
   <p class="lightbox__count" id="lb-count"></p>
+</dialog>
+
+<dialog class="wa-pick" id="wa-pick" aria-labelledby="wa-pick-title">
+  <div class="wa-pick__head">
+    <h2 class="wa-pick__title" id="wa-pick-title">Кому написати у WhatsApp?</h2>
+    <button class="modal__close" type="button" data-close aria-label="Закрити"><svg class="ic"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="wa-pick__list" id="wa-pick-list"></div>
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>

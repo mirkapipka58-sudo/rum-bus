@@ -279,9 +279,15 @@
         '<div class="mgr__head"><span class="mgr__ava" aria-hidden="true">' + esc(String(m.name || '?').charAt(0)) + '</span><div><p class="mgr__name">' + esc(m.name) + '</p><p class="mgr__role">' + esc(m.role || 'Менеджер') + '</p></div></div>' +
         (digits ? '<a class="mgr__phone" href="tel:+' + digits + '">' + icon('phone') + esc(prettyPhone(m.phone)) + '</a>' : '') +
         '<div class="mgr__links">' +
-          (safeUrl(m.telegram) ? '<a class="btn btn--tg" href="' + esc(m.telegram) + '" target="_blank" rel="noopener">' + icon('tg') + 'Telegram</a>' : '') +
-          (safeUrl(m.whatsapp) ? '<a class="btn btn--wa" href="' + esc(m.whatsapp) + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp</a>' : '') +
+          (safeUrl(m.whatsapp) ? '<a class="btn btn--wa btn--block" href="' + esc(m.whatsapp) + '" target="_blank" rel="noopener">' + icon('wa') + 'Написати у WhatsApp</a>' : '') +
         '</div></article>';
+    }).join('');
+    var waList = $('#wa-pick-list');
+    if (waList) waList.innerHTML = (DATA.managers || []).filter(function (m) { return safeUrl(m.whatsapp); }).map(function (m) {
+      return '<a class="wa-pick__item" href="' + esc(m.whatsapp) + '" target="_blank" rel="noopener">' +
+        '<span class="wa-pick__ava" aria-hidden="true">' + esc(String(m.name || '?').charAt(0)) + '</span>' +
+        '<span class="wa-pick__who"><b>' + esc(m.name) + '</b><small>' + esc(prettyPhone(m.phone)) + '</small></span>' +
+        '<span class="wa-pick__go" aria-hidden="true">' + icon('wa') + '</span></a>';
     }).join('');
     observeReveal(d);
   }
@@ -471,6 +477,29 @@
     e.preventDefault();
     var k = b.getAttribute('data-open');
     openForm(k, k === 'booking' ? { from: sFrom.value, to: sTo.value, date: sDate.value } : null);
+  });
+
+  /* WhatsApp manager chooser */
+  var waDlg = $('#wa-pick');
+  function openWaPick() {
+    if (!waDlg) return;
+    if (typeof waDlg.showModal === 'function') waDlg.showModal(); else waDlg.setAttribute('open', '');
+    lock(true);
+  }
+  function closeWaPick() { if (waDlg && waDlg.open) { if (typeof waDlg.close === 'function') waDlg.close(); else { waDlg.removeAttribute('open'); lock(false); } } }
+  if (waDlg) {
+    waDlg.addEventListener('close', function () { lock(false); });
+    var waDown = false;
+    waDlg.addEventListener('pointerdown', function (e) { waDown = e.target === waDlg && outside(waDlg, e); });
+    waDlg.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) { closeWaPick(); return; }
+      if (e.target.closest('.wa-pick__item')) { closeWaPick(); return; }
+      if (waDown && e.target === waDlg && outside(waDlg, e)) closeWaPick();
+      waDown = false;
+    });
+  }
+  d.addEventListener('click', function (e) {
+    if (e.target.closest('[data-wa-pick]')) { e.preventDefault(); openWaPick(); }
   });
 
   function pax() {
