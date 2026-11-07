@@ -310,7 +310,17 @@
     if (!data || !Array.isArray(data.routes)) return false;
     if (raw === lastJson) return true;
     var first = !lastJson;
-    lastJson = raw; DATA = data;
+    lastJson = raw;
+    // RUM-BUS owns its contacts/managers/branding/bridge; prices, routes and
+    // durations stay shared from the Eurotour source. Overlay data/rumbus.json.
+    var ov = w.RB_OVERRIDE;
+    if (ov && typeof ov === 'object') {
+      Object.keys(ov).forEach(function (k) {
+        if (k === 'routes' || k === 'pricing' || k === 'durations' || k === 'updated_at') return;
+        if (ov[k] != null) data[k] = ov[k];
+      });
+    }
+    DATA = data;
     var pr = data.pricing || {};
     var tiers = cleanTiers(pr.tiers); if (tiers) P.tiers = tiers;
     if (num(pr.eur_rate) > 20 && num(pr.eur_rate) < 200 && !rateLive) P.eur_rate = num(pr.eur_rate);
@@ -574,7 +584,7 @@
     send.then(function (ok) {
       btn.disabled = false; btn.textContent = label;
       if (ok) { form.hidden = true; $('#modal-done').hidden = false; $('#modal-done [data-close]').focus(); return; }
-      err.innerHTML = 'Не вдалося надіслати заявку. Перевірте інтернет і спробуйте ще раз або напишіть нам у <a href="' + esc(safeUrl((DATA.contacts || {}).telegram) || 'https://t.me/pereviznyk001') + '" target="_blank" rel="noopener">Telegram</a>.';
+      err.innerHTML = 'Не вдалося надіслати заявку. Перевірте інтернет і спробуйте ще раз або напишіть нам у <a href="' + esc(safeUrl((DATA.contacts || {}).telegram) || 'https://t.me/+380634460657') + '" target="_blank" rel="noopener">Telegram</a>.';
     });
   });
 
@@ -680,6 +690,8 @@
   }
 
   initUi(); initSearch(); initRoutes(); renderTariff(); initGallery();
-  load();
+  // Load RUM-BUS overrides first so contacts/managers/bridge are correct on the
+  // very first render, then pull shared prices/routes from the Eurotour source.
+  fetchText('data/rumbus.json', 4000).then(function (t) { try { w.RB_OVERRIDE = JSON.parse(t); } catch (e) {} }, function () {}).then(function () { load(); });
   setInterval(function () { if (d.hidden) return; load(); if (rateAuto && ready && !rateLive) fetchRate(); }, 5 * 60 * 1000);
 })(window, document);
