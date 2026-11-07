@@ -1,0 +1,10 @@
+{
+  "_encrypted": "state.v1",
+  "_note": "Encrypted Telegram bot state. Do not edit manually. Secret: GitHub Actions STATE_SECRET.",
+  "offset": 0,
+  "bridge_since": "12h",
+  "nonce": "tV4zEI5KHXvSChq6qA/jiQ==",
+  "ciphertext": "e4fZrVEX7BNGKrxVeMvNQCwKFwDwbYfRnNpwIDMCpMgYWi6w0l6FcdyadjesDcutA7Wm/e9Qy52h/Wu729ps+7OywNDfmQgridw+AHAD5NpCV63p20o3wHo042RNQr2ArMcMdrGxFYE4uVmrGZEtcC5ODsUwvfZT5GG+ePXQqr5+KtPuvPo6telNUgUjXLYASBkjAmMXOjVOslmunA==",
+  "tag": "jB+hfr2CraRSKSwP5xhMLBTP1ErnGqfm+mzZTeoaxU4=",
+  "updated_at": "2026-11-07T13:58:33Z"
+}
