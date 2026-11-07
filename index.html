@@ -14,7 +14,7 @@
 <link rel="preload" href="fonts/unbounded-cyr.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/manrope-cyr.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="images/hero-1280.webp" type="image/webp" imagesrcset="images/hero-820.webp 820w, images/hero-1280.webp 1280w, images/hero.webp 1920w" imagesizes="100vw">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -127,8 +127,8 @@
         </fieldset>
         <div class="finder__result">
           <div class="finder__price" aria-live="polite">
-            <span class="finder__meta" id="s-meta">Оберіть міста</span>
-            <strong id="s-price">—</strong>
+            <span class="finder__meta" id="s-meta">Рахуємо ціну…</span>
+            <strong id="s-price"><span class="skeleton"></span></strong>
           </div>
           <button class="btn btn--amber btn--lg" type="submit">Забронювати<svg class="ic"><use href="#i-arrow"/></svg></button>
         </div>
@@ -211,13 +211,13 @@
         <p>Шкіряні крісла з підголівниками, підсвітка, зарядки біля місць. Натисніть на фото, щоб роздивитися.</p>
       </div>
       <div class="gallery" id="gallery">
-        <button type="button" class="gallery__item gallery__item--big" data-reveal style="--d:0s" data-full="images/lux-1.webp" aria-label="Відкрити фото: Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою"><picture><source srcset="images/lux-1.webp" type="image/webp"><img src="images/lux-1.jpg" alt="Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою" loading="lazy" width="900" height="1200"></picture></button>
-        <button type="button" class="gallery__item gallery__item--tall" data-reveal style="--d:0.06s" data-full="images/comfort-2.webp" aria-label="Відкрити фото: Салон із бежевими кріслами і неоновою підсвіткою"><picture><source srcset="images/comfort-2.webp" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон із бежевими кріслами і неоновою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/lux-3.webp" aria-label="Відкрити фото: Фіолетове крісло біля вікна"><picture><source srcset="images/lux-3.webp" type="image/webp"><img src="images/lux-3.jpg" alt="Фіолетове крісло біля вікна" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item gallery__item--big" data-reveal style="--d:0s" data-full="images/lux-1.webp" aria-label="Відкрити фото: Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою"><picture><source srcset="images/lux-1-480.webp 480w, images/lux-1.webp 900w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/lux-1.jpg" alt="Прохід між фіолетовими кріслами, зоряна стеля з підсвіткою" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item gallery__item--tall" data-reveal style="--d:0.06s" data-full="images/comfort-2.webp" aria-label="Відкрити фото: Салон із бежевими кріслами і неоновою підсвіткою"><picture><source srcset="images/comfort-2-480.webp 480w, images/comfort-2.webp 787w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон із бежевими кріслами і неоновою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/lux-3.webp" aria-label="Відкрити фото: Фіолетове крісло біля вікна"><picture><source srcset="images/lux-3-480.webp 480w, images/lux-3.webp 900w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/lux-3.jpg" alt="Фіолетове крісло біля вікна" loading="lazy" width="900" height="1200"></picture></button>
         <button type="button" class="gallery__item " data-reveal style="--d:0.18s" data-full="images/comfort-3.webp" aria-label="Відкрити фото: Шкіряне крісло з подушкою під голову"><picture><source srcset="images/comfort-3-560.webp 560w, images/comfort-3.webp 787w" sizes="(max-width: 720px) 100vw, 600px" type="image/webp"><img src="images/comfort-3.jpg" alt="Шкіряне крісло з подушкою під голову" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item gallery__item--wide" data-reveal style="--d:0s" data-full="images/comfort-1.webp" aria-label="Відкрити фото: Ряди крісел під стелею з жовтою підсвіткою"><picture><source srcset="images/comfort-1.webp" type="image/webp"><img src="images/comfort-1.jpg" alt="Ряди крісел під стелею з жовтою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.06s" data-full="images/lux-2.webp" aria-label="Відкрити фото: Фіолетові крісла і підсвітка стелі"><picture><source srcset="images/lux-2.webp" type="image/webp"><img src="images/lux-2.jpg" alt="Фіолетові крісла і підсвітка стелі" loading="lazy" width="900" height="1200"></picture></button>
-        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/comfort-4.webp" aria-label="Відкрити фото: Крісло біля вікна з червоною підсвіткою"><picture><source srcset="images/comfort-4.webp" type="image/webp"><img src="images/comfort-4.jpg" alt="Крісло біля вікна з червоною підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item gallery__item--wide" data-reveal style="--d:0s" data-full="images/comfort-1.webp" aria-label="Відкрити фото: Ряди крісел під стелею з жовтою підсвіткою"><picture><source srcset="images/comfort-1-480.webp 480w, images/comfort-1.webp 787w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/comfort-1.jpg" alt="Ряди крісел під стелею з жовтою підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.06s" data-full="images/lux-2.webp" aria-label="Відкрити фото: Фіолетові крісла і підсвітка стелі"><picture><source srcset="images/lux-2-480.webp 480w, images/lux-2.webp 900w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/lux-2.jpg" alt="Фіолетові крісла і підсвітка стелі" loading="lazy" width="900" height="1200"></picture></button>
+        <button type="button" class="gallery__item " data-reveal style="--d:0.12s" data-full="images/comfort-4.webp" aria-label="Відкрити фото: Крісло біля вікна з червоною підсвіткою"><picture><source srcset="images/comfort-4-480.webp 480w, images/comfort-4.webp 787w" sizes="(max-width: 720px) 74vw, (max-width: 980px) 33vw, 25vw" type="image/webp"><img src="images/comfort-4.jpg" alt="Крісло біля вікна з червоною підсвіткою" loading="lazy" width="787" height="1400"></picture></button>
       </div>
     </div>
   </section>
@@ -257,7 +257,7 @@
           </div>
         </article>
         <article class="service" data-reveal>
-          <picture class="service__img service__img--cabin"><source srcset="images/comfort-2.webp" type="image/webp"><img src="images/comfort-2.jpg" alt="Салон мікроавтобуса на 7 пасажирів" loading="lazy" width="787" height="1400"></picture>
+          <picture class="service__img service__img--cabin"><source srcset="images/cabin-wide-720.webp 720w, images/cabin-wide.webp 1440w" sizes="(max-width: 720px) 100vw, (max-width: 980px) 100vw, 400px" type="image/webp"><img src="images/cabin-wide.jpg" alt="Салон мікроавтобуса з кріслами і підсвіткою" loading="lazy" width="1200" height="675"></picture>
           <div class="service__body">
             <span class="service__icon"><svg class="ic"><use href="#i-users"/></svg></span>
             <h3>Окремий автобус для групи</h3>
@@ -359,8 +359,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/geo.js?v=4"></script>
-<script src="js/bridge.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/geo.js?v=5"></script>
+<script src="js/bridge.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

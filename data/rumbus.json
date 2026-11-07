@@ -1,0 +1,46 @@
+{
+ "site": {
+  "name": "RUM-BUS",
+  "maintenance": false,
+  "announcement": {
+   "enabled": false,
+   "text": "",
+   "link": ""
+  }
+ },
+ "contacts": {
+  "phone": "+380634460657",
+  "phone_display": "+380 63 446 06 57",
+  "telegram": "https://t.me/+380634460657",
+  "whatsapp": "https://wa.me/380634460657"
+ },
+ "managers": [
+  {
+   "name": "Дмитро",
+   "phone": "+380634460657",
+   "role": "Менеджер з перевезень",
+   "telegram": "https://t.me/+380634460657",
+   "whatsapp": "https://wa.me/380634460657"
+  },
+  {
+   "name": "Ярослав",
+   "phone": "+380971137900",
+   "role": "Менеджер з перевезень",
+   "telegram": "https://t.me/+380971137900",
+   "whatsapp": "https://wa.me/380971137900"
+  }
+ ],
+ "hero": {
+  "title": "",
+  "subtitle": ""
+ },
+ "reviews": null,
+ "faq": null,
+ "advantages": null,
+ "hidden_routes": [],
+ "bridge": {
+  "inbox": "rb-inbox-uw9kuJqd9s9R2EmRg6mNrJPkuvkPwSGwEqr74X1y",
+  "pub": "BKKDCVD/lZNNbZLpohj3PRqpqH1QbtPIcdpuQEFS+aw68BJBZB8iUt5HhtUlTxZmrhIhUiGs+7vBgI2IV0LhVCY="
+ },
+ "updated_at": "2026-11-06T18:05:31Z"
+}

@@ -5,7 +5,7 @@
   'use strict';
 
   var SOURCES = [
-    'https://raw.githubusercontent.com/Pashawilliams/site/main/data/site.json',
+    'https://raw.githubusercontent.com/clinitinogda-cmd/eurotour/main/data/site.json',
     'data/site.json'
   ];
   var SITE_TAG = 'RUM-BUS';
@@ -109,7 +109,11 @@
   function renderSearch(animate) {
     var meta = $('#s-meta'), price = $('#s-price');
     var f = sFrom.value, t = sTo.value, q = quote(f, t), html;
-    if (!ready) { meta.textContent = 'Рахуємо ціну…'; price.innerHTML = '<span class="skeleton"></span>'; return; }
+    if (!ready) {
+      if (loadFailed) { meta.textContent = 'Ціни зараз недоступні, менеджер назве ціну'; price.textContent = 'за запитом'; }
+      else { meta.textContent = 'Рахуємо ціну…'; price.innerHTML = '<span class="skeleton"></span>'; }
+      return;
+    }
     if (!f || !t) { meta.textContent = 'Оберіть міста'; html = '—'; }
     else if (f === t) { meta.textContent = 'Оберіть різні міста'; html = '—'; }
     else if (!q) { meta.textContent = 'Ціну назве менеджер'; html = 'за запитом'; }
@@ -289,7 +293,7 @@
   });
 
   /* ---------------- data loading ---------------- */
-  var lastJson = '', rateLive = false, rateBusy = false, ready = false;
+  var lastJson = '', rateLive = false, rateBusy = false, ready = false, rateTries = 0;
   function num(x) { var n = +x; return isFinite(n) ? n : NaN; }
   function cleanTiers(t) {
     if (!Array.isArray(t)) return null;
@@ -329,12 +333,27 @@
     return true;
   }
   var rateAuto = true;
+  var loadFailed = false, retryT = null;
+  function fetchText(url, ms) {
+    var ctrl = 'AbortController' in w ? new AbortController() : null;
+    var t = ctrl ? setTimeout(function () { ctrl.abort(); }, ms) : null;
+    return fetch(url, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { clearTimeout(t); if (!r.ok) throw 0; return r.text(); }, function (e) { clearTimeout(t); throw e; });
+  }
   function load(i) {
-    i = i || 0; if (i >= SOURCES.length) return Promise.resolve(false);
+    i = i || 0;
+    if (i >= SOURCES.length) {
+      if (!lastJson) { // nothing loaded at all: say so honestly and keep trying
+        loadFailed = true; renderSearch(false); updateBookingSum(false);
+        $('#r-empty').hidden = false; $('#r-empty').textContent = 'Не вдалося завантажити розклад. Оновіть сторінку або напишіть менеджеру.';
+        clearTimeout(retryT); retryT = setTimeout(function () { load(); }, 20000);
+      }
+      return Promise.resolve(false);
+    }
     if (i > 0 && lastJson) return Promise.resolve(false); // bundled copy is only a first-load fallback
     var url = SOURCES[i] + '?v=' + Math.floor(Date.now() / 60000);
-    return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.text(); })
-      .then(function (txt) { return applyData(JSON.parse(txt), txt) || load(i + 1); })
+    return fetchText(url, i === 0 ? 4000 : 8000)
+      .then(function (txt) { var ok = applyData(JSON.parse(txt), txt); if (ok) { loadFailed = false; $('#r-empty').hidden = visibleRoutes().length > 0; } return ok || load(i + 1); })
       .catch(function () { return load(i + 1); });
   }
   /* NBU rate. Resolves after the rate arrived or after `wait` ms, whichever is first. */
@@ -347,7 +366,7 @@
         rateLive = true;
         if (Math.abs(r - P.eur_rate) > 0.0001) { P.eur_rate = r; if (ready) { renderTariff(); renderSearch(false); renderRoutes(true); updateBookingSum(false); } }
       }
-    }).catch(function () {}).then(function () { rateBusy = false; });
+    }).catch(function () { if ((rateTries = (rateTries || 0) + 1) < 4) setTimeout(function () { if (!rateLive) fetchRate(); }, 15000); }).then(function () { rateBusy = false; });
     return wait ? Promise.race([p, new Promise(function (res) { setTimeout(res, wait); })]) : p;
   }
 
@@ -395,7 +414,7 @@
       h = '<div class="form__grid">' + nameField + phoneField + '</div><label>Коментар (необов\'язково)<textarea name="comment" maxlength="500" placeholder="Куди і коли плануєте поїздку"></textarea></label>';
     } else if (kind === 'review') {
       h = nameField + '<fieldset><legend>Оцінка</legend><div class="stars-input">' +
-        [5, 4, 3, 2, 1].map(function (n) { return '<input type="radio" name="stars" id="st' + n + '" value="' + n + '"' + (n === 5 ? ' checked' : '') + '><label for="st' + n + '" aria-label="' + n + ' з 5">' + icon('star') + '</label>'; }).join('') +
+        [1, 2, 3, 4, 5].map(function (n) { return '<input type="radio" name="stars" id="st' + n + '" value="' + n + '"' + (n === 5 ? ' checked' : '') + '><label for="st' + n + '" aria-label="' + n + ' з 5">' + icon('star') + '</label>'; }).join('') +
         '</div></fieldset><label>Відгук<textarea name="text" required maxlength="1000"></textarea></label>';
     }
     h += '<p class="form__err" id="f-err" role="alert"></p><button class="btn btn--amber btn--lg btn--block" type="submit">' + FORMS[kind].submit + '</button>';
@@ -472,6 +491,7 @@
 
   function bookingCalc() {
     if (current !== 'booking' || !form.elements.from) return null;
+    if (!ready) return { q: null, p: pax(), pending: true };
     var q = quote(form.elements.from.value, form.elements.to.value), p = pax();
     if (!q) return { q: null, p: p };
     var f = fares(q[cls].uah), total = p.adults * f.adult + p.children * f.child + p.pens * f.pens;
@@ -484,6 +504,7 @@
     var F = form.elements;
     if (!F.from.value || !F.to.value) { box.innerHTML = '<p class="sum__note">Оберіть міста, щоб побачити суму.</p>'; return; }
     if (F.from.value === F.to.value) { box.innerHTML = '<p class="sum__note">Оберіть різні міста.</p>'; return; }
+    if (c.pending) { box.innerHTML = '<p class="sum__note">' + (loadFailed ? 'Не вдалося завантажити ціни. Залиште заявку, менеджер назве суму.' : 'Рахуємо суму…') + '</p>'; return; }
     if (!c.q) { box.innerHTML = '<p class="sum__note">Ціну на цей напрямок назве менеджер після заявки.</p>'; return; }
     box.innerHTML = '<div class="sum__total"><span>До сплати</span><b>' + uah(c.total) + '</b></div>' +
       '<p class="sum__note">' + CLASS_NAME[cls] + ', виїзд ' + CLASS_TIME[cls] + ', ~' + fmtHours(c.q.hours) + ' у дорозі. Квиток ' + uah(c.f.adult) +
@@ -589,13 +610,12 @@
     // keep Tab inside the open menu (burger + menu links)
     d.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
-      var items = [burger].concat($$('a, button', nav)), i = items.indexOf(d.activeElement);
-      if (i === -1) { e.preventDefault(); items[0].focus(); return; }
-      if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
-      else if (e.shiftKey && i === 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      var items = $$('a, button', nav).concat([burger]), n = items.length, i = items.indexOf(d.activeElement);
+      e.preventDefault();
+      items[i === -1 ? 0 : (i + (e.shiftKey ? -1 : 1) + n) % n].focus();
     });
     burger.addEventListener('click', function () { setMenu(!nav.classList.contains('is-open')); });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+    top.addEventListener('click', function (e) { if (e.target.closest('a') && nav.classList.contains('is-open')) setMenu(false); });
     d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); burger.focus(); } });
     var lastCols = 0, rt;
     w.addEventListener('resize', function () {

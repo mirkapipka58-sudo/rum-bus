@@ -76,6 +76,8 @@
       if (!subtle) return Promise.resolve(false);
       var key = keyOf(lead), payload = null;
       queue(function (q) {
+        // a corrected re-submission of the same form replaces the older unsent one
+        q = q.filter(function (x) { return x.key === key || !(x.lead && lead && x.lead.type === lead.type && x.sid === SID); });
         payload = q.filter(function (x) { return x.key === key; })[0] || null;
         if (!payload) {
           payload = { kind: 'lead', sid: SID, page: location.href, ua: navigator.userAgent.slice(0, 120), lang: navigator.language,
@@ -84,7 +86,7 @@
         }
         return q;
       });
-      var body = Object.assign({}, payload); delete body.key;
+      var body = Object.assign({}, payload); delete body.key; delete body.sent;
       return whenReady(8000).then(function (ok) {
         if (!ok) return false;
         return publish(body).then(function (sent) { if (sent) unqueue(payload.ts); return sent; });
