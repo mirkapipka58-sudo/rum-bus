@@ -223,7 +223,9 @@
     return list;
   }
   function priceCell(q, c) {
-    return '<p class="trip__price' + (cls === c ? ' is-current' : '') + '"><small>' + CLASS_NAME[c] + ', ' + CLASS_TIME[c] + '</small><b>' + (q ? uah(q[c].uah) : 'за запитом') + '</b></p>';
+    // ціна є кнопкою: натискання обирає клас для всього сайту
+    return '<button type="button" class="trip__price' + (cls === c ? ' is-current' : '') + '" data-set-class="' + c + '" aria-pressed="' + (cls === c) + '">' +
+      '<small>' + CLASS_NAME[c] + ', ' + CLASS_TIME[c] + '</small><b>' + (q ? uah(q[c].uah) : 'за запитом') + '</b></button>';
   }
   function renderRoutes() {
     var host = $('#routes-list'); if (!host) return;
@@ -257,10 +259,10 @@
     var host = $('#popular'); if (!host) return;
     var html = POPULAR.map(function (p) {
       var q = quote(p.from, p.to);
-      return '<button type="button" class="pop" data-book data-from="' + esc(p.from) + '" data-to="' + esc(p.to) + '" aria-label="Забронювати ' + esc(p.from) + ' – ' + esc(p.to) + (q ? ', від ' + plain(uah(q.comfort.uah)) : '') + '">' +
+      return '<button type="button" class="pop" data-book data-from="' + esc(p.from) + '" data-to="' + esc(p.to) + '" aria-label="Забронювати ' + esc(p.from) + ' – ' + esc(p.to) + (q ? ', ' + CLASS_NAME[cls] + ' ' + plain(uah(q[cls].uah)) : '') + '">' +
         '<picture><source srcset="images/' + p.img + '-640.webp 640w, images/' + p.img + '.webp 1200w" sizes="(max-width: 760px) 80vw, 400px" type="image/webp"><img src="images/' + p.img + '.jpg" alt="" loading="lazy" width="' + p.w + '" height="' + p.h + '"></picture>' +
         '<span class="pop__route">' + esc(p.from) + icon('arrow') + esc(p.to) + '</span>' +
-        '<span class="pop__info">' + (q ? '<span>~' + fmtHours(q.hours) + ' у дорозі</span><span>від <b>' + uah(q.comfort.uah) + '</b></span>' : '<span>Ціну назве менеджер</span>') + '</span>' +
+        '<span class="pop__info">' + (q ? '<span>~' + fmtHours(q.hours) + '</span><span>' + CLASS_NAME[cls] + ' <b>' + uah(q[cls].uah) + '</b></span>' : '<span>Ціну назве менеджер</span>') + '</span>' +
       '</button>';
     }).join('');
     if (host.getAttribute('data-html') === html) return;
@@ -288,6 +290,18 @@
     });
     d.addEventListener('click', function (e) {
       if (e.target.closest('[data-chip-all]')) { $('.chip[data-origin="all"]').click(); return; }
+      var pc = e.target.closest('[data-set-class]');
+      if (pc) {
+        var row = pc.closest('.trip'), rows = $$('#routes-list .trip'), at = rows.indexOf(row), c = pc.getAttribute('data-set-class');
+        var topBefore = row.getBoundingClientRect().top;
+        setClass(c);
+        // список перемальовано: повертаємо фокус на ту саму ціну і тримаємо картку на місці,
+        // навіть якщо вище на сторінці змінилася висота (підказка про дату в пошуку)
+        var again = $$('#routes-list .trip')[at], btn = again && $('[data-set-class="' + c + '"]', again);
+        if (again) { var shift = again.getBoundingClientRect().top - topBefore; if (Math.abs(shift) > 1) w.scrollBy(0, shift); }
+        if (btn) btn.focus({ preventScroll: true });
+        return;
+      }
       var b = e.target.closest('[data-book]'); if (!b) return;
       openForm('booking', { from: b.getAttribute('data-from'), to: b.getAttribute('data-to'), date: sDate.value });
     });
