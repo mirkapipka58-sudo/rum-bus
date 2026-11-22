@@ -3,8 +3,8 @@
   "_note": "Encrypted Telegram bot state. Do not edit manually. Secret: GitHub Actions STATE_SECRET.",
   "offset": 158290680,
   "bridge_since": "y0LtGmx36gwp",
-  "nonce": "3965SJE2FGyw508u247bBw==",
-  "ciphertext": "iKqIKUrhLVC16pDKalPa5nYaUxKdF3plDZY/mdssMdvwT/odEjXuuq7GkxG1z1KheaO9UZqRPHOyAjdIEERVwBNXxnbhmcNDXiwDEHIoN/Ji23weLj4EEt+LR9tzgQsd1sdZtkrF5ufrlw3bQuXDK/0D7DVGzkghuJb6/uuphgbBEwS9nh4cP4OTYlJIpLlc2YHzQDc7y2iSy7XTX3lZl+7pOtgRF4XFC6vMwIktyau198Re0TbymLAP8RvES4A6ud2USWg1LTpQAds52dWnfJ7TipAyVXWuwUVUrnazdU1ux2g0vsHRas8eGeJXmySSE8LFg0K2jjOmxwDo6OgBKx+r2mTcCx0+uCPWZHzvLS9RhnKNdCQLCwIwOxbbzQTY9KEJ4YcGNxaC78ig8ZNuBHrOgIFd2w4XP44If0s6LSPDitg0U52seGbYeb+ErojZqOfZYsawFPPwDmUB9iVr52fyuPVDNKQ9UcxIDDtJ9cdYHI1kq4VWZhcp1Aj1RpHiTzQuiGhG6b/bGi7q0xzjU8W1qVhNv4ewETVNYT/rhbo4Cg==",
-  "tag": "CmGv+WcOHnD/9Ih3ZXxboMsWhkWw+lPNwaE//Fv4NuA=",
-  "updated_at": "2026-11-22T07:08:53Z"
+  "nonce": "rCL9rHnE6V+GCrVoXlPYmw==",
+  "ciphertext": "TaaYJteN/R672tuVyZANFHCvGT9HVTm2faO7S3jfpYiY6nfizZHMZSdZY0MFnawijmgNqpkOdhkjVAX1qW4vFrp0+xFoL+EbvsfVnw/r/kFwWZ1oG8BpSTLF4eslpqVrnoF4HD6MQJRs7A3RFbYUTIxq3TE/NDrRWIHea0g7l829gTKm4Wb+Ym2N3ENeUMjH9jdUwfHR7bWq2VQY0S4Mv8PcO0Bd7wPNA1NMgich/DpXWE6bt/2+I6trfsJ3593jdI0xqqZVZOdCi63kQNPcxwKEeiAR3E9qnioFqKuPTbgMlyZLfpCY6OOitDiM3OlVs0ETg4kaPJgpBrFQk4jOmPBSk+V9ZVZiludHknLalQahlW8rdyS7Huaf+ZTP+h60fMSVmZhqhkLRSw3T+Kq1GU13iNX7R6GUQh5vRZ5ZETTelI+DHj9JtEhQPzVlbgVIKpiWLwZgEhPpXOQSp6oT3SmUt8IZWLOgvd+5QCL+1fQ30E72QWu8+wGwMGnRzNIWvFcbCjN4zKqdMqGjSR4ycXi+MfMZbM9AY3l6s2K4A+HcrQ==",
+  "tag": "0JutBZoSDEEy9ys5e0TtxLnBvJ+6vWMvl5fZonIcV0s=",
+  "updated_at": "2026-11-22T12:29:53Z"
 }
